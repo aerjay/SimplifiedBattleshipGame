@@ -1,9 +1,5 @@
 # Battleship
 
-This program is an implementation of the classic battle ship game. It was built using .Net core 3.1.
+This program is an implementation of the classic battle ship game. It was built using vanilla javascript, css, and html.
 
-To build the program: `dotnet "build" "SimplifiedBattleshipGame.sln"`
-
-To run the program: `dotnet "run" "--project" "SimplifiedBattleshipGame\SimplifiedBattleshipGame.csproj"` or double-click executable file at `"SimplifiedBattleshipGame\SimplifiedBattleshipGame\bin\Debug\netcoreapp3.1\SimplifiedBattleshipGame.exe"`
-
-To run unit tests: `dotnet "test" "SimplifiedBattleshipGameTests\SimplifiedBattleshipGameTests.csproj"`
+To play, open the index.html with the latest version of Chrome or Firefox, or visit http://aerjay.github.io/SimplifiedBattleshipGame.
