@@ -1,54 +1,59 @@
-import React from "react";
+import React from 'react'
+import PropTypes from 'prop-types'
 
-const BOARD_SIZE = 10;
-const BOARD_A_CHAR_CODE = "A".charCodeAt();
-const SHIP_SIZE = 3;
+const BOARD_SIZE = 10
+const BOARD_A_CHAR_CODE = 'A'.charCodeAt()
+const SHIP_SIZE = 3
 
-function Square(props) {
+function Square (props) {
   return (
     <button className="square" onClick={props.onClick}>
       {props.value}
     </button>
-  );
+  )
+}
+
+Square.propTypes = {
+  onClick: PropTypes.func,
+  value: PropTypes.string
 }
 
 class Board extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       grid: this.initGrid(),
-      clickedSquares: [],
-    };
+      clickedSquares: []
+    }
   }
 
-  initGrid() {
-    let grid = new Map();
+  initGrid () {
+    const grid = new Map()
 
     for (let x = BOARD_A_CHAR_CODE; x < BOARD_A_CHAR_CODE + BOARD_SIZE; x++) {
       for (let y = 1; y <= BOARD_SIZE; y++) {
         grid.set(
           `${String.fromCharCode(x)}${y.toString()}`,
-          `${String.fromCharCode(x)}${y.toString()}`
-        );
+          `${String.fromCharCode(x)}${y.toString()}` // for debugging
+        )
       }
     }
-    return grid;
+    return grid
   }
 
-  handleClick(x, y) {
-    const clickedSquares = this.state.clickedSquares.slice();
-    const grid = new Map(this.state.grid);
+  handleClick (x, y) {
+    const clickedSquares = this.state.clickedSquares.slice()
+    const grid = new Map(this.state.grid)
 
     if (clickedSquares.length === 0) {
-      clickedSquares.push({ x, y });
-      grid.set(x + y, "S");
+      clickedSquares.push({ x, y })
+      grid.set(x + y, 'S')
     }
 
     if (
       clickedSquares.length < SHIP_SIZE &&
       !clickedSquares.some((val) => val.x === x && val.y === y)
     ) {
-      //horizontal
       if (
         clickedSquares.every((val) => val.y === y) &&
         clickedSquares.some(
@@ -57,47 +62,44 @@ class Board extends React.Component {
             val.x.charCodeAt() - x.charCodeAt() === -1
         )
       ) {
-        clickedSquares.push({ x: x, y: y });
-        grid.set(x + y, "S");
-      }
-
-      //vertical
-      else if (
+        clickedSquares.push({ x: x, y: y })
+        grid.set(x + y, 'S')
+      } else if (
         clickedSquares.every((val) => val.x === x) &&
         clickedSquares.some((val) => val.y - y === 1 || val.y - y === -1)
       ) {
-        clickedSquares.push({ x: x, y: y });
-        grid.set(x + y, "S");
+        clickedSquares.push({ x: x, y: y })
+        grid.set(x + y, 'S')
       }
     }
 
-    this.setState({ grid: grid, clickedSquares: clickedSquares });
+    this.setState({ grid: grid, clickedSquares: clickedSquares })
   }
 
-  renderSquare(x, y) {
+  renderSquare (x, y) {
     return (
       <Square
         key={x + y}
         value={this.state.grid.get(x + y)}
         onClick={() => this.handleClick(x, y)}
       />
-    );
+    )
   }
 
-  render() {
-    let grid = [];
-    let rows = [];
+  render () {
+    const grid = []
+    let rows = []
 
     for (let y = 1; y <= BOARD_SIZE; y++) {
-      rows = [];
+      rows = []
       for (let x = BOARD_A_CHAR_CODE; x < BOARD_A_CHAR_CODE + BOARD_SIZE; x++) {
-        rows.push(this.renderSquare(String.fromCharCode(x), y));
+        rows.push(this.renderSquare(String.fromCharCode(x), y))
       }
       grid.push(
         <div key={y} className="board-row">
           {rows}
         </div>
-      );
+      )
     }
 
     return (
@@ -128,8 +130,8 @@ class Board extends React.Component {
         </div>
         <div className="grid">{grid}</div>
       </div>
-    );
+    )
   }
 }
 
-export default Board;
+export default Board
