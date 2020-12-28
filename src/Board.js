@@ -1,23 +1,9 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import Square from './Square'
 
 const BOARD_SIZE = 10
 const BOARD_A_CHAR_CODE = 'A'.charCodeAt()
 const SHIP_SIZE = 3
-
-function Square (props) {
-	return (
-		<button className="square" data-testid={props.testId} onClick={props.onClick}>
-			{props.value}
-		</button>
-	)
-}
-
-Square.propTypes = {
-	onClick: PropTypes.func,
-	value: PropTypes.string,
-	testId: PropTypes.string
-}
 
 class Board extends React.Component {
 	constructor (props) {
