@@ -1,35 +1,18 @@
 import React from 'react'
 import Board from './Board'
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 
 const BOARD_SIZE = 10
-const BOARD_A_CHAR_CODE = 'A'.charCodeAt()
 
 test('renders all the squares', async () => {
-  render(<Board />)
+  const { findAllByRole } = render(<Board />)
 
-  const squares = await screen.findAllByRole('button')
+  const squares = await findAllByRole('button')
 
   expect(squares).toHaveLength(BOARD_SIZE * BOARD_SIZE)
   squares.forEach((square) => {
     expect(square).toHaveClass('square')
   })
-})
-
-test('renders column labels', () => {
-  render(<Board />)
-
-  for (let index = 1; index < BOARD_SIZE; index++) {
-    expect(screen.getByText(index)).toBeInTheDocument()
-  }
-})
-
-test('renders row labels', () => {
-  render(<Board />)
-
-  for (let index = BOARD_A_CHAR_CODE; index < BOARD_A_CHAR_CODE + BOARD_SIZE; index++) {
-    expect(screen.getByText(String.fromCharCode(index))).toBeInTheDocument()
-  }
 })
 
 // Valid:
