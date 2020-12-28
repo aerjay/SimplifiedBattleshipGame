@@ -6,30 +6,30 @@ const BOARD_SIZE = 10
 const BOARD_A_CHAR_CODE = 'A'.charCodeAt()
 
 test('renders all the squares', async () => {
-	render(<Board />)
+  render(<Board />)
 
-	const squares = await screen.findAllByRole('button')
+  const squares = await screen.findAllByRole('button')
 
-	expect(squares).toHaveLength(BOARD_SIZE * BOARD_SIZE)
-	squares.forEach((square) => {
-		expect(square).toHaveClass('square')
-	})
+  expect(squares).toHaveLength(BOARD_SIZE * BOARD_SIZE)
+  squares.forEach((square) => {
+    expect(square).toHaveClass('square')
+  })
 })
 
 test('renders column labels', () => {
-	render(<Board />)
+  render(<Board />)
 
-	for (let index = 1; index < BOARD_SIZE; index++) {
-		expect(screen.getByText(index)).toBeInTheDocument()
-	}
+  for (let index = 1; index < BOARD_SIZE; index++) {
+    expect(screen.getByText(index)).toBeInTheDocument()
+  }
 })
 
 test('renders row labels', () => {
-	render(<Board />)
+  render(<Board />)
 
-	for (let index = BOARD_A_CHAR_CODE; index < BOARD_A_CHAR_CODE + BOARD_SIZE; index++) {
-		expect(screen.getByText(String.fromCharCode(index))).toBeInTheDocument()
-	}
+  for (let index = BOARD_A_CHAR_CODE; index < BOARD_A_CHAR_CODE + BOARD_SIZE; index++) {
+    expect(screen.getByText(String.fromCharCode(index))).toBeInTheDocument()
+  }
 })
 
 // Valid:

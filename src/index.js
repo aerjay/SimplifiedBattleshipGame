@@ -4,8 +4,8 @@ import './index.css'
 import Game from './Game'
 
 ReactDOM.render(
-	<React.StrictMode>
-		<Game />
-	</React.StrictMode>,
-	document.getElementById('root')
+  <React.StrictMode>
+    <Game />
+  </React.StrictMode>,
+  document.getElementById('root')
 )
