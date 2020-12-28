@@ -7,7 +7,7 @@ const SHIP_SIZE = 3
 
 function Square (props) {
 	return (
-		<button className="square" onClick={props.onClick}>
+		<button className="square" data-testid={props.testId} onClick={props.onClick}>
 			{props.value}
 		</button>
 	)
@@ -15,7 +15,8 @@ function Square (props) {
 
 Square.propTypes = {
 	onClick: PropTypes.func,
-	value: PropTypes.string
+	value: PropTypes.string,
+	testId: PropTypes.string
 }
 
 class Board extends React.Component {
@@ -77,7 +78,7 @@ class Board extends React.Component {
 		return (
 			<Square
 				key={x + y}
-				data-testid={x + y}
+				testId={x + y}
 				value={this.state.grid.get(x + y)}
 				onClick={() => this.handleClick(x, y)}
 			/>
