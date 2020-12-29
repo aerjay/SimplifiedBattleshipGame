@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event'
 const BOARD_SIZE = 10
 const BOARD_A_CHAR_CODE = 'A'.charCodeAt()
 const MARKER_TYPE_SHIP = 'ship'
+const MARKER_TYPE_HIT = 'hit'
 
 test('renders all the squares', async () => {
 	render(<Board />)
@@ -13,9 +14,6 @@ test('renders all the squares', async () => {
 	const squares = await screen.findAllByRole('button')
 
 	expect(squares).toHaveLength(BOARD_SIZE * BOARD_SIZE)
-	squares.forEach((square) => {
-		expect(square).toHaveClass('square')
-	})
 })
 
 test('renders column labels', () => {
@@ -29,12 +27,16 @@ test('renders column labels', () => {
 test('renders row labels', () => {
 	render(<Board />)
 
-	for (let index = BOARD_A_CHAR_CODE; index < BOARD_A_CHAR_CODE + BOARD_SIZE; index++) {
+	for (
+		let index = BOARD_A_CHAR_CODE;
+		index < BOARD_A_CHAR_CODE + BOARD_SIZE;
+		index++
+	) {
 		expect(screen.getByText(String.fromCharCode(index))).toBeInTheDocument()
 	}
 })
 
-test('changes square value on click', () => {
+test('changes square class on click', () => {
 	render(<Board />)
 	const a1 = screen.getByTestId('A1')
 
@@ -43,7 +45,7 @@ test('changes square value on click', () => {
 	expect(a1).toHaveClass(MARKER_TYPE_SHIP)
 })
 
-test('changes square value on double click', () => {
+test('changes square class on double click', () => {
 	render(<Board />)
 	const a1 = screen.getByTestId('A1')
 
@@ -52,7 +54,7 @@ test('changes square value on double click', () => {
 	expect(a1).toHaveClass(MARKER_TYPE_SHIP)
 })
 
-test('changes first selected square when clicking non-neighbouring squares', () => {
+test('changes the class of the first selected square when clicking non-neighbouring squares', () => {
 	render(<Board />)
 	const i3 = screen.getByTestId('I3')
 	const e6 = screen.getByTestId('E6')
@@ -70,7 +72,7 @@ test('changes first selected square when clicking non-neighbouring squares', () 
 	expect(a10).not.toHaveClass(MARKER_TYPE_SHIP)
 })
 
-test('changes first three distinct horizontal neighbouring squares', () => {
+test('changes the class of the first three distinct horizontal neighbouring squares', () => {
 	render(<Board />)
 	const f9 = screen.getByTestId('F9')
 	const g9 = screen.getByTestId('G9')
@@ -88,7 +90,7 @@ test('changes first three distinct horizontal neighbouring squares', () => {
 	expect(e9).toHaveClass(MARKER_TYPE_SHIP)
 })
 
-test('changes first three distinct vertical neighbouring squares', () => {
+test('changes the class of the first three distinct vertical neighbouring squares', () => {
 	render(<Board />)
 	const b8 = screen.getByTestId('B8')
 	const b9 = screen.getByTestId('B9')
@@ -106,7 +108,7 @@ test('changes first three distinct vertical neighbouring squares', () => {
 	expect(b7).toHaveClass(MARKER_TYPE_SHIP)
 })
 
-test('changes first three distinct horizontal neighbouring squares when clicking more than three squares', () => {
+test('changes the class of the first three distinct horizontal neighbouring squares when clicking more than three squares', () => {
 	render(<Board />)
 	const c1 = screen.getByTestId('C1')
 	const d1 = screen.getByTestId('D1')
@@ -124,20 +126,47 @@ test('changes first three distinct horizontal neighbouring squares when clicking
 	expect(f1).not.toHaveClass(MARKER_TYPE_SHIP)
 })
 
-test('changes first three distinct vertical neighbouring squares when clicking more than three squares', () => {
+test('changes the class of the first three distinct vertical neighbouring squares when clicking more than three squares', () => {
 	render(<Board />)
-	const j7 = screen.getByTestId('C1')
-	const j8 = screen.getByTestId('D1')
-	const j6 = screen.getByTestId('E1')
-	const a1 = screen.getByTestId('A1')
+	const f8 = screen.getByTestId('F8')
+	const f9 = screen.getByTestId('F9')
+	const e9 = screen.getByTestId('E9')
+	const f7 = screen.getByTestId('F7')
 
-	userEvent.click(j7)
-	userEvent.click(j8)
-	userEvent.click(j6)
-	userEvent.click(a1)
+	userEvent.click(f8)
+	userEvent.click(f9)
+	userEvent.click(e9)
+	userEvent.click(f7)
 
-	expect(j7).toHaveClass(MARKER_TYPE_SHIP)
-	expect(j8).toHaveClass(MARKER_TYPE_SHIP)
-	expect(j6).toHaveClass(MARKER_TYPE_SHIP)
-	expect(a1).not.toHaveClass(MARKER_TYPE_SHIP)
+	expect(f8).toHaveClass(MARKER_TYPE_SHIP)
+	expect(f9).toHaveClass(MARKER_TYPE_SHIP)
+	expect(e9).not.toHaveClass(MARKER_TYPE_SHIP)
+	expect(f7).toHaveClass(MARKER_TYPE_SHIP)
+})
+
+test('only changes the class of the three selected squares by re-clicking them', () => {
+	render(<Board />)
+	const c1 = screen.getByTestId('C1')
+	const d1 = screen.getByTestId('D1')
+	const e1 = screen.getByTestId('E1')
+	const f8 = screen.getByTestId('F8')
+	const f9 = screen.getByTestId('F9')
+	const f7 = screen.getByTestId('F7')
+	userEvent.click(c1)
+	userEvent.click(d1)
+	userEvent.click(e1)
+
+	userEvent.click(f7)
+	userEvent.click(c1)
+	userEvent.click(d1)
+	userEvent.click(f8)
+	userEvent.click(e1)
+	userEvent.click(f9)
+
+	expect(c1).toHaveClass(MARKER_TYPE_HIT)
+	expect(d1).toHaveClass(MARKER_TYPE_HIT)
+	expect(e1).toHaveClass(MARKER_TYPE_HIT)
+	expect(f7).not.toHaveClass(MARKER_TYPE_HIT)
+	expect(f8).not.toHaveClass(MARKER_TYPE_HIT)
+	expect(f9).not.toHaveClass(MARKER_TYPE_HIT)
 })
