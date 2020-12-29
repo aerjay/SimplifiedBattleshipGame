@@ -67,3 +67,13 @@
 .game {
   display: flex;
 }
+
+.hit {
+	outline-color: blue;
+	outline-style: auto;
+	background-color: red;
+}
+
+.ship {
+	background-color: blue;
+}

@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event'
 
 const BOARD_SIZE = 10
 const BOARD_A_CHAR_CODE = 'A'.charCodeAt()
+const MARKER_TYPE_SHIP = 'ship'
 
 test('renders all the squares', async () => {
 	render(<Board />)
@@ -39,7 +40,7 @@ test('changes square value on click', () => {
 
 	userEvent.click(a1)
 
-	expect(a1).toHaveTextContent('S')
+	expect(a1).toHaveClass(MARKER_TYPE_SHIP)
 })
 
 test('changes square value on double click', () => {
@@ -48,7 +49,7 @@ test('changes square value on double click', () => {
 
 	userEvent.click(a1)
 
-	expect(a1).toHaveTextContent('S')
+	expect(a1).toHaveClass(MARKER_TYPE_SHIP)
 })
 
 test('changes first selected square when clicking non-neighbouring squares', () => {
@@ -63,10 +64,10 @@ test('changes first selected square when clicking non-neighbouring squares', () 
 	userEvent.click(c2)
 	userEvent.click(a10)
 
-	expect(i3).toHaveTextContent('S')
-	expect(e6).not.toHaveTextContent('S')
-	expect(c2).not.toHaveTextContent('S')
-	expect(a10).not.toHaveTextContent('S')
+	expect(i3).toHaveClass(MARKER_TYPE_SHIP)
+	expect(e6).not.toHaveClass(MARKER_TYPE_SHIP)
+	expect(c2).not.toHaveClass(MARKER_TYPE_SHIP)
+	expect(a10).not.toHaveClass(MARKER_TYPE_SHIP)
 })
 
 test('changes first three distinct horizontal neighbouring squares', () => {
@@ -81,10 +82,10 @@ test('changes first three distinct horizontal neighbouring squares', () => {
 	userEvent.click(g10)
 	userEvent.click(e9)
 
-	expect(f9).toHaveTextContent('S')
-	expect(g9).toHaveTextContent('S')
-	expect(g10).not.toHaveTextContent('S')
-	expect(e9).toHaveTextContent('S')
+	expect(f9).toHaveClass(MARKER_TYPE_SHIP)
+	expect(g9).toHaveClass(MARKER_TYPE_SHIP)
+	expect(g10).not.toHaveClass(MARKER_TYPE_SHIP)
+	expect(e9).toHaveClass(MARKER_TYPE_SHIP)
 })
 
 test('changes first three distinct vertical neighbouring squares', () => {
@@ -99,10 +100,10 @@ test('changes first three distinct vertical neighbouring squares', () => {
 	userEvent.click(c9)
 	userEvent.click(b7)
 
-	expect(b8).toHaveTextContent('S')
-	expect(b9).toHaveTextContent('S')
-	expect(c9).not.toHaveTextContent('S')
-	expect(b7).toHaveTextContent('S')
+	expect(b8).toHaveClass(MARKER_TYPE_SHIP)
+	expect(b9).toHaveClass(MARKER_TYPE_SHIP)
+	expect(c9).not.toHaveClass(MARKER_TYPE_SHIP)
+	expect(b7).toHaveClass(MARKER_TYPE_SHIP)
 })
 
 test('changes first three distinct horizontal neighbouring squares when clicking more than three squares', () => {
@@ -117,10 +118,10 @@ test('changes first three distinct horizontal neighbouring squares when clicking
 	userEvent.click(e1)
 	userEvent.click(f1)
 
-	expect(c1).toHaveTextContent('S')
-	expect(d1).toHaveTextContent('S')
-	expect(e1).toHaveTextContent('S')
-	expect(f1).not.toHaveTextContent('S')
+	expect(c1).toHaveClass(MARKER_TYPE_SHIP)
+	expect(d1).toHaveClass(MARKER_TYPE_SHIP)
+	expect(e1).toHaveClass(MARKER_TYPE_SHIP)
+	expect(f1).not.toHaveClass(MARKER_TYPE_SHIP)
 })
 
 test('changes first three distinct vertical neighbouring squares when clicking more than three squares', () => {
@@ -135,8 +136,8 @@ test('changes first three distinct vertical neighbouring squares when clicking m
 	userEvent.click(j6)
 	userEvent.click(a1)
 
-	expect(j7).toHaveTextContent('S')
-	expect(j8).toHaveTextContent('S')
-	expect(j6).toHaveTextContent('S')
-	expect(a1).not.toHaveTextContent('S')
+	expect(j7).toHaveClass(MARKER_TYPE_SHIP)
+	expect(j8).toHaveClass(MARKER_TYPE_SHIP)
+	expect(j6).toHaveClass(MARKER_TYPE_SHIP)
+	expect(a1).not.toHaveClass(MARKER_TYPE_SHIP)
 })
