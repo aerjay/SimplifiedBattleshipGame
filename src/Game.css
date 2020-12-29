@@ -77,3 +77,13 @@
 .ship {
 	background-color: blue;
 }
+
+.hit {
+	outline-color: blue;
+	outline-style: auto;
+	background-color: red;
+}
+
+.ship {
+	background-color: blue;
+}
