@@ -17,7 +17,7 @@ test('renders a square with passed properties', () => {
 test('calls onCLick handler on click', () => {
 	const testId = '0'
 	const onClickHandler = jest.fn()
-	render(<Square testId={testId} onClick={onClickHandler}/>)
+	render(<Square testId={testId} onClick={onClickHandler} />)
 	const square = screen.getByTestId(testId)
 
 	userEvent.click(square)

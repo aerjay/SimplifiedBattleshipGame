@@ -7,7 +7,7 @@ const SHIP_SIZE = 3
 const MARKER_TYPE_EMPTY = null
 const MARKER_TYPE_SHIP = 'ship'
 const MARKER_TYPE_HIT = 'hit'
-// const MARKER_TYPE_MISS = 'M'
+// const MARKER_TYPE_MISS = 'miss'
 
 class Board extends React.Component {
 	constructor (props) {
@@ -34,7 +34,28 @@ class Board extends React.Component {
 	handleClick (x, y) {
 		const clickedSquares = this.state.clickedSquares.slice()
 		const grid = new Map(this.state.grid)
+		let isShipSunk = this.state.isShipSunk
 
+		if (!this.state.isShipPlaced) {
+			this.placeShipOnBoard(clickedSquares, x, y, grid)
+		} else {
+			if (grid.get(x + y) === MARKER_TYPE_SHIP) {
+				grid.set(x + y, MARKER_TYPE_HIT)
+				isShipSunk = clickedSquares.every(
+					(val) => grid.get(val.x + val.y) === MARKER_TYPE_HIT
+				)
+			}
+		}
+
+		this.setState({
+			grid: grid,
+			clickedSquares: clickedSquares,
+			isShipPlaced: clickedSquares.length === SHIP_SIZE,
+			isShipSunk: isShipSunk
+		})
+	}
+
+	placeShipOnBoard (clickedSquares, x, y, grid) {
 		if (clickedSquares.length === 0) {
 			clickedSquares.push({ x, y })
 			grid.set(x + y, MARKER_TYPE_SHIP)
@@ -42,32 +63,26 @@ class Board extends React.Component {
 
 		if (
 			clickedSquares.length < SHIP_SIZE &&
-      !clickedSquares.some((val) => val.x === x && val.y === y)
+			!clickedSquares.some((val) => val.x === x && val.y === y)
 		) {
 			if (
 				clickedSquares.every((val) => val.y === y) &&
-				clickedSquares.some((val) => val.x.charCodeAt() - x.charCodeAt() === 1 ||
-				val.x.charCodeAt() - x.charCodeAt() === -1)
+				clickedSquares.some(
+					(val) =>
+						val.x.charCodeAt() - x.charCodeAt() === 1 ||
+						val.x.charCodeAt() - x.charCodeAt() === -1
+				)
 			) {
 				clickedSquares.push({ x: x, y: y })
 				grid.set(x + y, MARKER_TYPE_SHIP)
 			} else if (
 				clickedSquares.every((val) => val.x === x) &&
-        clickedSquares.some((val) => val.y - y === 1 || val.y - y === -1)
+				clickedSquares.some((val) => val.y - y === 1 || val.y - y === -1)
 			) {
 				clickedSquares.push({ x: x, y: y })
 				grid.set(x + y, MARKER_TYPE_SHIP)
 			}
 		}
-
-		if (this.state.isShipPlaced && grid.get(x + y) === MARKER_TYPE_SHIP) {
-			grid.set(x + y, MARKER_TYPE_HIT)
-		}
-
-		const isShipPlaced = clickedSquares.length === SHIP_SIZE
-		const isShipSunk = isShipPlaced && clickedSquares.every(val => grid.get(val.x + val.y) === MARKER_TYPE_HIT)
-
-		this.setState({ grid: grid, clickedSquares: clickedSquares, isShipPlaced: isShipPlaced, isShipSunk: isShipSunk })
 	}
 
 	renderSquare (x, y) {
@@ -90,7 +105,11 @@ class Board extends React.Component {
 			for (let x = BOARD_A_CHAR_CODE; x < BOARD_A_CHAR_CODE + BOARD_SIZE; x++) {
 				rows.push(this.renderSquare(String.fromCharCode(x), y))
 			}
-			grid.push(<div key={y} className="board-row">{rows}</div>)
+			grid.push(
+				<div key={y} className="board-row">
+					{rows}
+				</div>
+			)
 		}
 
 		return (

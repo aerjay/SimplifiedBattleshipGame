@@ -2,7 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 function Square (props) {
-	return (<button className={'square ' + props.value} data-testid={props.testId} onClick={props.onClick}/>)
+	return (
+		<button
+			className={'square ' + props.value}
+			data-testid={props.testId}
+			onClick={props.onClick}
+		/>
+	)
 }
 
 Square.propTypes = {
