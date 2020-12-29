@@ -1,8 +1,8 @@
 import React from 'react'
-import './Game.css'
+import './Player.css'
 import Board from './Board'
 
-class Game extends React.Component {
+class Player extends React.Component {
 	render () {
 		return (
 			<div className="game">
@@ -14,4 +14,4 @@ class Game extends React.Component {
 	}
 }
 
-export default Game
+export default Player
