@@ -4,10 +4,10 @@ import Square from './Square'
 const BOARD_SIZE = 10
 const BOARD_A_CHAR_CODE = 'A'.charCodeAt()
 const SHIP_SIZE = 3
-const MARKER_TYPE_EMPTY = null
+const MARKER_TYPE_EMPTY = 'none'
 const MARKER_TYPE_SHIP = 'ship'
 const MARKER_TYPE_HIT = 'hit'
-// const MARKER_TYPE_MISS = 'miss'
+const MARKER_TYPE_MISS = 'miss'
 
 class Board extends React.Component {
 	constructor (props) {
@@ -44,6 +44,8 @@ class Board extends React.Component {
 				isShipSunk = clickedSquares.every(
 					(val) => grid.get(val.x + val.y) === MARKER_TYPE_HIT
 				)
+			} else if (grid.get(x + y) === MARKER_TYPE_EMPTY) {
+				grid.set(x + y, MARKER_TYPE_MISS)
 			}
 		}
 
