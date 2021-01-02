@@ -27,6 +27,6 @@
     ],
     "rules": {
 			"indent": ["error", "tab"],
-			"allowIndentationTabs": true
+			"no-tabs": ["error", {"allowIndentationTabs": true}]
     }
 }

@@ -10,7 +10,6 @@ const MARKER_TYPE_HIT = 'hit'
 const MARKER_TYPE_MISS = 'miss'
 const MARKER_TYPE_EMPTY = 'none'
 
-
 test('renders all the squares', async () => {
 	render(<Board />)
 
