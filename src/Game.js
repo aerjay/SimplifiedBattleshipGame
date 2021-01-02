@@ -7,6 +7,7 @@ class Game extends React.Component {
 		return (
 			<div className="game">
 				<Player name="Player 1"/>
+				<Player name="Player 2"/>
 			</div>
 		)
 	}
