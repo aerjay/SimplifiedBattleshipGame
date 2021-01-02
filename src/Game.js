@@ -1,14 +1,12 @@
 import React from 'react'
 import './Game.css'
-import Board from './Board'
+import Player from './Player'
 
 class Game extends React.Component {
 	render () {
 		return (
 			<div className="game">
-				<div className="game-board">
-					<Board />
-				</div>
+				<Player name="Player 1"/>
 			</div>
 		)
 	}

@@ -1,0 +1,32 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+				"plugin:react/recommended",
+				"standard",
+				"plugin:testing-library/recommended",
+				"react-app",
+				"plugin:jest-dom/recommended",
+				"plugin:jest/recommended"
+		],
+		"parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+				"react",
+				"testing-library",
+				"jest",
+				"jest-dom"
+    ],
+    "rules": {
+			"indent": ["error", "tab"],
+			"no-tabs": ["error", {"allowIndentationTabs": true}]
+    }
+}
