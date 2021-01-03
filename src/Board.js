@@ -1,5 +1,6 @@
 import React from 'react'
 import Square from './Square'
+import PropTypes from 'prop-types'
 
 const BOARD_SIZE = 10
 const BOARD_A_CHAR_CODE = 'A'.charCodeAt()
@@ -36,6 +37,8 @@ class Board extends React.Component {
 		const grid = new Map(this.state.grid)
 		let isShipSunk = this.state.isShipSunk
 
+		if (isShipSunk) { return }
+
 		if (!this.state.isShipPlaced) {
 			this.placeShipOnBoard(clickedSquares, x, y, grid)
 		} else {
@@ -47,6 +50,10 @@ class Board extends React.Component {
 			} else if (grid.get(x + y) === MARKER_TYPE_EMPTY) {
 				grid.set(x + y, MARKER_TYPE_MISS)
 			}
+		}
+
+		if (isShipSunk) {
+			this.props.onShipHasSunk()
 		}
 
 		this.setState({
@@ -144,6 +151,10 @@ class Board extends React.Component {
 			</div>
 		)
 	}
+}
+
+Board.propTypes = {
+	onShipHasSunk: PropTypes.func
 }
 
 export default Board
