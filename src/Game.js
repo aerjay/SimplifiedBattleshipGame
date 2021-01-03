@@ -8,7 +8,7 @@ const PLAYER_TWO_NAME = 'Player 2'
 class Game extends React.Component {
 	handlePlayerHasLost (playerName) {
 		const winner = (playerName === PLAYER_ONE_NAME) ? PLAYER_TWO_NAME : PLAYER_ONE_NAME
-		console.log('YOU LOST ' + playerName)
+		console.log('You lost ' + playerName)
 		console.log('Congratulations ' + winner)
 	}
 
