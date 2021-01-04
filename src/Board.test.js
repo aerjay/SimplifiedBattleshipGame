@@ -148,7 +148,8 @@ test('changes the class of the first three distinct vertical neighbouring square
 })
 
 test('only changes the class of squares that has ship class to hit by re-clicking them and the rest as miss class', () => {
-	render(<Board />)
+	const onShipHadSunkHandler = jest.fn()
+	render(<Board onShipHasSunk={onShipHadSunkHandler} />)
 	const c1 = screen.getByTestId('C1')
 	const d1 = screen.getByTestId('D1')
 	const e1 = screen.getByTestId('E1')
@@ -163,8 +164,8 @@ test('only changes the class of squares that has ship class to hit by re-clickin
 	userEvent.click(c1)
 	userEvent.click(d1)
 	userEvent.click(f8)
-	userEvent.click(e1)
 	userEvent.click(f9)
+	userEvent.click(e1)
 
 	expect(c1).toHaveClass(MARKER_TYPE_HIT)
 	expect(d1).toHaveClass(MARKER_TYPE_HIT)
@@ -172,4 +173,51 @@ test('only changes the class of squares that has ship class to hit by re-clickin
 	expect(f7).toHaveClass(MARKER_TYPE_MISS)
 	expect(f8).toHaveClass(MARKER_TYPE_MISS)
 	expect(f9).toHaveClass(MARKER_TYPE_MISS)
+})
+
+test('not allowed to click any squares after setting three squares\' class to hit', () => {
+	render(<Board onShipHasSunk={() => { }} />)
+	const f8 = screen.getByTestId('F8')
+	const f9 = screen.getByTestId('F9')
+	const f10 = screen.getByTestId('F10')
+	const a1 = screen.getByTestId('A1')
+	const f1 = screen.getByTestId('F1')
+	const a10 = screen.getByTestId('A10')
+	userEvent.click(f8)
+	userEvent.click(f9)
+	userEvent.click(f10)
+	userEvent.click(f8)
+	userEvent.click(f9)
+	userEvent.click(f10)
+
+	userEvent.click(a1)
+	userEvent.click(f1)
+	userEvent.click(a10)
+
+	expect(f8).toHaveClass(MARKER_TYPE_HIT)
+	expect(f9).toHaveClass(MARKER_TYPE_HIT)
+	expect(f10).toHaveClass(MARKER_TYPE_HIT)
+	expect(a1).toHaveClass(MARKER_TYPE_EMPTY)
+	expect(f1).toHaveClass(MARKER_TYPE_EMPTY)
+	expect(a10).toHaveClass(MARKER_TYPE_EMPTY)
+})
+
+test('calls onShipHasSunk handler once after setting three squares\' class to hit', () => {
+	const onShipHasSunkHandler = jest.fn()
+	render(<Board onShipHasSunk={onShipHasSunkHandler} />)
+	const f8 = screen.getByTestId('F8')
+	const f9 = screen.getByTestId('F9')
+	const f10 = screen.getByTestId('F10')
+	userEvent.click(f8)
+	userEvent.click(f9)
+	userEvent.click(f10)
+
+	userEvent.click(f8)
+	userEvent.click(f9)
+	userEvent.click(f10)
+
+	expect(f8).toHaveClass(MARKER_TYPE_HIT)
+	expect(f9).toHaveClass(MARKER_TYPE_HIT)
+	expect(f10).toHaveClass(MARKER_TYPE_HIT)
+	expect(onShipHasSunkHandler).toHaveBeenCalledTimes(1)
 })

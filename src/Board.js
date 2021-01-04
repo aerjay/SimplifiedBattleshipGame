@@ -16,8 +16,8 @@ class Board extends React.Component {
 		this.state = {
 			grid: this.initGrid(),
 			clickedSquares: [],
-			isShipPlaced: false,
-			isShipSunk: false
+			isShipHasPlaced: false,
+			isShipHasSunk: false
 		}
 	}
 
@@ -35,16 +35,16 @@ class Board extends React.Component {
 	handleClick (x, y) {
 		const clickedSquares = this.state.clickedSquares.slice()
 		const grid = new Map(this.state.grid)
-		let isShipSunk = this.state.isShipSunk
+		let isShipHasSunk = this.state.isShipHasSunk
 
-		if (isShipSunk) { return }
+		if (isShipHasSunk) { return }
 
-		if (!this.state.isShipPlaced) {
+		if (!this.state.isShipHasPlaced) {
 			this.placeShipOnBoard(clickedSquares, x, y, grid)
 		} else {
 			if (grid.get(x + y) === MARKER_TYPE_SHIP) {
 				grid.set(x + y, MARKER_TYPE_HIT)
-				isShipSunk = clickedSquares.every(
+				isShipHasSunk = clickedSquares.every(
 					(val) => grid.get(val.x + val.y) === MARKER_TYPE_HIT
 				)
 			} else if (grid.get(x + y) === MARKER_TYPE_EMPTY) {
@@ -52,15 +52,15 @@ class Board extends React.Component {
 			}
 		}
 
-		if (isShipSunk) {
+		if (isShipHasSunk) {
 			this.props.onShipHasSunk()
 		}
 
 		this.setState({
 			grid: grid,
 			clickedSquares: clickedSquares,
-			isShipPlaced: clickedSquares.length === SHIP_SIZE,
-			isShipSunk: isShipSunk
+			isShipHasPlaced: clickedSquares.length === SHIP_SIZE,
+			isShipHasSunk: isShipHasSunk
 		})
 	}
 
