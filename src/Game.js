@@ -40,12 +40,13 @@ class Game extends React.Component {
 		this.setState({ whoseTurn: whoseTurn, shipsOnBoard: shipsOnBoard })
 	};
 
-	renderPlayer (name, hideBoard) {
+	renderPlayer (name, hideBoard, showShipOnBoard) {
 		return (
 			<Player
 				key={name}
 				name={name}
-				customStyle={hideBoard ? 'hide-board' : null}
+				customStyle={hideBoard ? 'hide-board' : ''}
+				showShipOnBoard={showShipOnBoard}
 				onPlayerHasLost={this.handlePlayerHasLost}
 				onEnemyEndOfTurn={this.handleEnemyEndOfTurn}
 				onPlayerShipPlacement={this.handlePlayerShipPlacement}
@@ -59,19 +60,19 @@ class Game extends React.Component {
 
 		if (shipsOnBoard.every((val) => val === true)) {
 			if (this.state.whoseTurn === PLAYER_ONE_NAME) {
-				players.push(this.renderPlayer(PLAYER_ONE_NAME, true))
-				players.push(this.renderPlayer(PLAYER_TWO_NAME, false))
+				players.push(this.renderPlayer(PLAYER_ONE_NAME, true, false))
+				players.push(this.renderPlayer(PLAYER_TWO_NAME, false, false))
 			} else {
-				players.push(this.renderPlayer(PLAYER_ONE_NAME, false))
-				players.push(this.renderPlayer(PLAYER_TWO_NAME, true))
+				players.push(this.renderPlayer(PLAYER_ONE_NAME, false, false))
+				players.push(this.renderPlayer(PLAYER_TWO_NAME, true, false))
 			}
 		} else {
 			if (this.state.whoseTurn === PLAYER_ONE_NAME) {
-				players.push(this.renderPlayer(PLAYER_ONE_NAME, false))
-				players.push(this.renderPlayer(PLAYER_TWO_NAME, true))
+				players.push(this.renderPlayer(PLAYER_ONE_NAME, false, true))
+				players.push(this.renderPlayer(PLAYER_TWO_NAME, true, true))
 			} else {
-				players.push(this.renderPlayer(PLAYER_ONE_NAME, true))
-				players.push(this.renderPlayer(PLAYER_TWO_NAME, false))
+				players.push(this.renderPlayer(PLAYER_ONE_NAME, true, true))
+				players.push(this.renderPlayer(PLAYER_TWO_NAME, false, true))
 			}
 		}
 

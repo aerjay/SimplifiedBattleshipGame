@@ -110,11 +110,24 @@ class Board extends React.Component {
 	}
 
 	renderSquare (x, y) {
+		const marker = this.state.grid.get(x + y)
+
+		if (!this.props.showShipMarker && marker === MARKER_TYPE_SHIP) {
+			return (
+				<Square
+					key={x + y}
+					testId={x + y}
+					customStyle={''}
+					onClick={() => this.handleClick(x, y)}
+				/>
+			)
+		}
+
 		return (
 			<Square
 				key={x + y}
 				testId={x + y}
-				customStyle={this.state.grid.get(x + y)}
+				customStyle={marker}
 				onClick={() => this.handleClick(x, y)}
 			/>
 		)
@@ -169,9 +182,14 @@ class Board extends React.Component {
 }
 
 Board.propTypes = {
+	showShipMarker: PropTypes.bool,
 	onShipHasSunk: PropTypes.func.isRequired,
 	onEnemyEndOfTurn: PropTypes.func.isRequired,
 	onShipPlacement: PropTypes.func.isRequired
+}
+
+Board.defaultPropTypes = {
+	showShipMarker: true
 }
 
 export default Board

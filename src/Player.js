@@ -20,6 +20,7 @@ class Player extends React.Component {
 			<div className={'game-board ' + this.props.customStyle}>
 				<h3>{this.props.name}</h3>
 				<Board
+					showShipMarker={this.props.showShipOnBoard}
 					onShipHasSunk={this.handleShipHasSunk}
 					onEnemyEndOfTurn={this.handleEnemyEndOfTurn}
 					onShipPlacement={this.handleShipPlacement}
@@ -32,6 +33,7 @@ class Player extends React.Component {
 Player.propTypes = {
 	name: PropTypes.string.isRequired,
 	customStyle: PropTypes.string,
+	showShipOnBoard: PropTypes.bool.isRequired,
 	onPlayerHasLost: PropTypes.func.isRequired,
 	onEnemyEndOfTurn: PropTypes.func.isRequired,
 	onPlayerShipPlacement: PropTypes.func.isRequired
