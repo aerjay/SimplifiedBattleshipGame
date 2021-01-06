@@ -6,19 +6,76 @@ const PLAYER_ONE_NAME = 'Player 1'
 const PLAYER_TWO_NAME = 'Player 2'
 
 class Game extends React.Component {
-	handlePlayerHasLost (playerName) {
-		const winner = (playerName === PLAYER_ONE_NAME) ? PLAYER_TWO_NAME : PLAYER_ONE_NAME
+	constructor (props) {
+		super(props)
+		this.state = {
+			gameOver: false,
+			whoseTurn: PLAYER_ONE_NAME,
+			shipsOnBoard: new Map([
+				[PLAYER_ONE_NAME, false],
+				[PLAYER_TWO_NAME, false]
+			])
+		}
+	}
+
+	handleEnemyEndOfTurn = (playerName) => {
+		console.log('Your turn ' + playerName)
+		this.setState({ whoseTurn: playerName })
+	};
+
+	handlePlayerHasLost = (playerName) => {
+		const winner =
+			playerName === PLAYER_ONE_NAME ? PLAYER_TWO_NAME : PLAYER_ONE_NAME
 		console.log('You lost ' + playerName)
 		console.log('Congratulations ' + winner)
+
+		this.setState({ gameOver: true })
+	};
+
+	handlePlayerShipPlacement = (playerName) => {
+		const whoseTurn =
+			playerName === PLAYER_ONE_NAME ? PLAYER_TWO_NAME : PLAYER_ONE_NAME
+		const shipsOnBoard = new Map(this.state.shipsOnBoard)
+		shipsOnBoard.set(playerName, true)
+		this.setState({ whoseTurn: whoseTurn, shipsOnBoard: shipsOnBoard })
+	};
+
+	renderPlayer (name, hideBoard) {
+		return (
+			<Player
+				key={name}
+				name={name}
+				customStyle={hideBoard ? 'hide-board' : null}
+				onPlayerHasLost={this.handlePlayerHasLost}
+				onEnemyEndOfTurn={this.handleEnemyEndOfTurn}
+				onPlayerShipPlacement={this.handlePlayerShipPlacement}
+			/>
+		)
 	}
 
 	render () {
-		return (
-			<div className="game">
-				<Player name={PLAYER_ONE_NAME} onPlayerHasLost={this.handlePlayerHasLost}/>
-				<Player name={PLAYER_TWO_NAME} onPlayerHasLost={this.handlePlayerHasLost}/>
-			</div>
-		)
+		const shipsOnBoard = [...this.state.shipsOnBoard.values()]
+		const players = new Array(2)
+
+		if (shipsOnBoard.every((val) => val === true)) {
+			if (this.state.whoseTurn === PLAYER_ONE_NAME) {
+				players.push(this.renderPlayer(PLAYER_ONE_NAME, true))
+				players.push(this.renderPlayer(PLAYER_TWO_NAME, false))
+			} else {
+				players.push(this.renderPlayer(PLAYER_ONE_NAME, false))
+				players.push(this.renderPlayer(PLAYER_TWO_NAME, true))
+			}
+		} else {
+			if (this.state.whoseTurn === PLAYER_ONE_NAME) {
+				players.push(this.renderPlayer(PLAYER_ONE_NAME, false))
+				players.push(this.renderPlayer(PLAYER_TWO_NAME, true))
+			} else {
+				players.push(this.renderPlayer(PLAYER_ONE_NAME, true))
+				players.push(this.renderPlayer(PLAYER_TWO_NAME, false))
+			}
+		}
+
+		return <div className="game">{players}</div>
 	}
 }
 

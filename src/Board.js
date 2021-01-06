@@ -16,8 +16,8 @@ class Board extends React.Component {
 		this.state = {
 			grid: this.initGrid(),
 			clickedSquares: [],
-			isShipHasPlaced: false,
-			isShipHasSunk: false
+			hasShipPlaced: false,
+			hasShipSunk: false
 		}
 	}
 
@@ -35,32 +35,47 @@ class Board extends React.Component {
 	handleClick (x, y) {
 		const clickedSquares = this.state.clickedSquares.slice()
 		const grid = new Map(this.state.grid)
-		let isShipHasSunk = this.state.isShipHasSunk
+		let hasShipSunk = this.state.hasShipSunk
+		let hasShipPlaced = this.state.hasShipPlaced
+		let hasEnemyAttackEnded = false
 
-		if (isShipHasSunk) { return }
+		if (hasShipSunk) {
+			return
+		}
 
-		if (!this.state.isShipHasPlaced) {
+		if (!hasShipPlaced) {
 			this.placeShipOnBoard(clickedSquares, x, y, grid)
 		} else {
 			if (grid.get(x + y) === MARKER_TYPE_SHIP) {
 				grid.set(x + y, MARKER_TYPE_HIT)
-				isShipHasSunk = clickedSquares.every(
+				hasShipSunk = clickedSquares.every(
 					(val) => grid.get(val.x + val.y) === MARKER_TYPE_HIT
 				)
+				hasEnemyAttackEnded = true
 			} else if (grid.get(x + y) === MARKER_TYPE_EMPTY) {
 				grid.set(x + y, MARKER_TYPE_MISS)
+				hasEnemyAttackEnded = true
 			}
 		}
 
-		if (isShipHasSunk) {
+		if (!hasShipPlaced && clickedSquares.length === SHIP_SIZE) {
+			hasShipPlaced = true
+			this.props.onShipPlacement()
+		}
+
+		if (hasShipSunk) {
 			this.props.onShipHasSunk()
+		}
+
+		if (hasEnemyAttackEnded) {
+			this.props.onEnemyEndOfTurn()
 		}
 
 		this.setState({
 			grid: grid,
 			clickedSquares: clickedSquares,
-			isShipHasPlaced: clickedSquares.length === SHIP_SIZE,
-			isShipHasSunk: isShipHasSunk
+			hasShipPlaced: hasShipPlaced,
+			hasShipSunk: hasShipSunk
 		})
 	}
 
@@ -99,7 +114,7 @@ class Board extends React.Component {
 			<Square
 				key={x + y}
 				testId={x + y}
-				value={this.state.grid.get(x + y)}
+				customStyle={this.state.grid.get(x + y)}
 				onClick={() => this.handleClick(x, y)}
 			/>
 		)
@@ -154,7 +169,9 @@ class Board extends React.Component {
 }
 
 Board.propTypes = {
-	onShipHasSunk: PropTypes.func
+	onShipHasSunk: PropTypes.func.isRequired,
+	onEnemyEndOfTurn: PropTypes.func.isRequired,
+	onShipPlacement: PropTypes.func.isRequired
 }
 
 export default Board

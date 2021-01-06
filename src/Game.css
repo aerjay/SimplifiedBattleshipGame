@@ -68,3 +68,7 @@
 .ship {
 	background-color: blue;
 }
+
+.hide-board {
+	visibility: hidden;
+}
