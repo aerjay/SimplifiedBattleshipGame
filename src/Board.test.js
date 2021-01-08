@@ -11,7 +11,7 @@ const MARKER_TYPE_MISS = 'miss'
 const MARKER_TYPE_EMPTY = 'none'
 
 test('renders all the squares', async () => {
-	render(<Board />)
+	render(<Board showShipMarker={true} onShipHasSunk={() => {}} onEnemyEndOfTurn={() => {}} onShipPlacement={() => {}}/>)
 
 	const squares = await screen.findAllByRole('button')
 
@@ -20,7 +20,7 @@ test('renders all the squares', async () => {
 })
 
 test('renders column labels', () => {
-	render(<Board />)
+	render(<Board showShipMarker={true} onShipHasSunk={() => {}} onEnemyEndOfTurn={() => {}} onShipPlacement={() => {}}/>)
 
 	for (let index = 1; index < BOARD_SIZE; index++) {
 		expect(screen.getByText(index)).toBeInTheDocument()
@@ -28,7 +28,7 @@ test('renders column labels', () => {
 })
 
 test('renders row labels', () => {
-	render(<Board />)
+	render(<Board showShipMarker={true} onShipHasSunk={() => {}} onEnemyEndOfTurn={() => {}} onShipPlacement={() => {}}/>)
 
 	for (
 		let index = BOARD_A_CHAR_CODE;
@@ -40,7 +40,7 @@ test('renders row labels', () => {
 })
 
 test('changes square class to ship on click', () => {
-	render(<Board />)
+	render(<Board showShipMarker={true} onShipHasSunk={() => {}} onEnemyEndOfTurn={() => {}} onShipPlacement={() => {}}/>)
 	const a1 = screen.getByTestId('A1')
 
 	userEvent.click(a1)
@@ -49,7 +49,7 @@ test('changes square class to ship on click', () => {
 })
 
 test('changes square class to ship on double click', () => {
-	render(<Board />)
+	render(<Board showShipMarker={true} onShipHasSunk={() => {}} onEnemyEndOfTurn={() => {}} onShipPlacement={() => {}}/>)
 	const a1 = screen.getByTestId('A1')
 
 	userEvent.click(a1)
@@ -58,7 +58,7 @@ test('changes square class to ship on double click', () => {
 })
 
 test('changes the class of the first selected square to ship when clicking non-neighbouring squares', () => {
-	render(<Board />)
+	render(<Board showShipMarker={true} onShipHasSunk={() => {}} onEnemyEndOfTurn={() => {}} onShipPlacement={() => {}}/>)
 	const i3 = screen.getByTestId('I3')
 	const e6 = screen.getByTestId('E6')
 	const c2 = screen.getByTestId('C2')
@@ -76,7 +76,7 @@ test('changes the class of the first selected square to ship when clicking non-n
 })
 
 test('changes the class of the first three distinct horizontal neighbouring squares to ship', () => {
-	render(<Board />)
+	render(<Board showShipMarker={true} onShipHasSunk={() => {}} onEnemyEndOfTurn={() => {}} onShipPlacement={() => {}}/>)
 	const f9 = screen.getByTestId('F9')
 	const g9 = screen.getByTestId('G9')
 	const g10 = screen.getByTestId('G10')
@@ -94,7 +94,7 @@ test('changes the class of the first three distinct horizontal neighbouring squa
 })
 
 test('changes the class of the first three distinct vertical neighbouring squares to ship', () => {
-	render(<Board />)
+	render(<Board showShipMarker={true} onShipHasSunk={() => {}} onEnemyEndOfTurn={() => {}} onShipPlacement={() => {}}/>)
 	const b8 = screen.getByTestId('B8')
 	const b9 = screen.getByTestId('B9')
 	const c9 = screen.getByTestId('C9')
@@ -112,7 +112,7 @@ test('changes the class of the first three distinct vertical neighbouring square
 })
 
 test('changes the class of the first three distinct horizontal neighbouring squares to ship and the rest to miss when clicking more than three squares', () => {
-	render(<Board />)
+	render(<Board showShipMarker={true} onShipHasSunk={() => {}} onEnemyEndOfTurn={() => {}} onShipPlacement={() => {}}/>)
 	const c1 = screen.getByTestId('C1')
 	const d1 = screen.getByTestId('D1')
 	const e1 = screen.getByTestId('E1')
@@ -130,7 +130,7 @@ test('changes the class of the first three distinct horizontal neighbouring squa
 })
 
 test('changes the class of the first three distinct vertical neighbouring squares to ship when clicking more than three squares', () => {
-	render(<Board />)
+	render(<Board showShipMarker={true} onShipHasSunk={() => {}} onEnemyEndOfTurn={() => {}} onShipPlacement={() => {}}/>)
 	const f8 = screen.getByTestId('F8')
 	const f9 = screen.getByTestId('F9')
 	const e9 = screen.getByTestId('E9')
@@ -149,7 +149,7 @@ test('changes the class of the first three distinct vertical neighbouring square
 
 test('only changes the class of squares that has ship class to hit by re-clicking them and the rest as miss class', () => {
 	const onShipHadSunkHandler = jest.fn()
-	render(<Board onShipHasSunk={onShipHadSunkHandler} />)
+	render(<Board showShipMarker={true} onShipHasSunk={onShipHadSunkHandler} onEnemyEndOfTurn={() => {}} onShipPlacement={() => {}}/>)
 	const c1 = screen.getByTestId('C1')
 	const d1 = screen.getByTestId('D1')
 	const e1 = screen.getByTestId('E1')
@@ -176,7 +176,7 @@ test('only changes the class of squares that has ship class to hit by re-clickin
 })
 
 test('not allowed to click any squares after setting three squares\' class to hit', () => {
-	render(<Board onShipHasSunk={() => { }} />)
+	render(<Board showShipMarker={true} onShipHasSunk={() => {}} onEnemyEndOfTurn={() => {}} onShipPlacement={() => {}}/>)
 	const f8 = screen.getByTestId('F8')
 	const f9 = screen.getByTestId('F9')
 	const f10 = screen.getByTestId('F10')
@@ -204,7 +204,7 @@ test('not allowed to click any squares after setting three squares\' class to hi
 
 test('calls onShipHasSunk handler once after setting three squares\' class to hit', () => {
 	const onShipHasSunkHandler = jest.fn()
-	render(<Board onShipHasSunk={onShipHasSunkHandler} />)
+	render(<Board showShipMarker={true} onShipHasSunk={onShipHasSunkHandler} onEnemyEndOfTurn={() => {}} onShipPlacement={() => {}}/>)
 	const f8 = screen.getByTestId('F8')
 	const f9 = screen.getByTestId('F9')
 	const f10 = screen.getByTestId('F10')

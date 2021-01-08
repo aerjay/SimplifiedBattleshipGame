@@ -182,14 +182,10 @@ class Board extends React.Component {
 }
 
 Board.propTypes = {
-	showShipMarker: PropTypes.bool,
+	showShipMarker: PropTypes.bool.isRequired,
 	onShipHasSunk: PropTypes.func.isRequired,
 	onEnemyEndOfTurn: PropTypes.func.isRequired,
 	onShipPlacement: PropTypes.func.isRequired
-}
-
-Board.defaultPropTypes = {
-	showShipMarker: true
 }
 
 export default Board

@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 
 test('renders a square with passed properties', () => {
 	const name = 'value'
-	render(<Player name={name} onPlayerHasLost={() => {}}/>)
+	render(<Player name={name} showShipOnBoard={true} onPlayerHasLost={() => {}} onEnemyEndOfTurn={() => {}} onPlayerShipPlacement={() => {}}/>)
 
 	const player = screen.getByText(name)
 
@@ -15,7 +15,7 @@ test('renders a square with passed properties', () => {
 test('calls onPlayerHasLost handler once when all the parts of the ship has been hit', () => {
 	const name = 'value'
 	const onPlayerHasLostHandler = jest.fn()
-	render(<Player name={name} onPlayerHasLost={onPlayerHasLostHandler}/>)
+	render(<Player name={name} showShipOnBoard={true} onPlayerHasLost={onPlayerHasLostHandler} onEnemyEndOfTurn={() => {}} onPlayerShipPlacement={() => {}}/>)
 	const f1 = screen.getByTestId('F1')
 	const f2 = screen.getByTestId('F2')
 	const f3 = screen.getByTestId('F3')
