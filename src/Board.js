@@ -1,5 +1,6 @@
 import React from 'react'
 import Square from './Square'
+import PropTypes from 'prop-types'
 
 const BOARD_SIZE = 10
 const BOARD_A_CHAR_CODE = 'A'.charCodeAt()
@@ -14,9 +15,9 @@ class Board extends React.Component {
 		super(props)
 		this.state = {
 			grid: this.initGrid(),
-			clickedSquares: [],
-			isShipPlaced: false,
-			isShipSunk: false
+			clickedAdjSquares: [],
+			hasShipPlaced: false,
+			hasShipSunk: false
 		}
 	}
 
@@ -32,67 +33,101 @@ class Board extends React.Component {
 	}
 
 	handleClick (x, y) {
-		const clickedSquares = this.state.clickedSquares.slice()
+		const clickedAdjSquares = this.state.clickedAdjSquares.slice()
 		const grid = new Map(this.state.grid)
-		let isShipSunk = this.state.isShipSunk
+		let hasShipSunk = this.state.hasShipSunk
+		let hasShipPlaced = this.state.hasShipPlaced
+		let hasEnemyAttackEnded = false
 
-		if (!this.state.isShipPlaced) {
-			this.placeShipOnBoard(clickedSquares, x, y, grid)
+		if (hasShipSunk) {
+			return
+		}
+
+		if (!hasShipPlaced) {
+			this.placeShipOnBoard(clickedAdjSquares, x, y, grid)
 		} else {
 			if (grid.get(x + y) === MARKER_TYPE_SHIP) {
 				grid.set(x + y, MARKER_TYPE_HIT)
-				isShipSunk = clickedSquares.every(
+				hasShipSunk = clickedAdjSquares.every(
 					(val) => grid.get(val.x + val.y) === MARKER_TYPE_HIT
 				)
+				hasEnemyAttackEnded = true
 			} else if (grid.get(x + y) === MARKER_TYPE_EMPTY) {
 				grid.set(x + y, MARKER_TYPE_MISS)
+				hasEnemyAttackEnded = true
 			}
+		}
+
+		if (!hasShipPlaced && clickedAdjSquares.length === SHIP_SIZE) {
+			hasShipPlaced = true
+			this.props.onShipPlacement()
+		}
+
+		if (hasShipSunk) {
+			this.props.onShipHasSunk()
+		}
+
+		if (hasEnemyAttackEnded) {
+			this.props.onEnemyEndOfTurn()
 		}
 
 		this.setState({
 			grid: grid,
-			clickedSquares: clickedSquares,
-			isShipPlaced: clickedSquares.length === SHIP_SIZE,
-			isShipSunk: isShipSunk
+			clickedAdjSquares: clickedAdjSquares,
+			hasShipPlaced: hasShipPlaced,
+			hasShipSunk: hasShipSunk
 		})
 	}
 
-	placeShipOnBoard (clickedSquares, x, y, grid) {
-		if (clickedSquares.length === 0) {
-			clickedSquares.push({ x, y })
+	placeShipOnBoard (clickedAdjSquares, x, y, grid) {
+		if (clickedAdjSquares.length === 0) {
+			clickedAdjSquares.push({ x, y })
 			grid.set(x + y, MARKER_TYPE_SHIP)
 		}
 
 		if (
-			clickedSquares.length < SHIP_SIZE &&
-			!clickedSquares.some((val) => val.x === x && val.y === y)
+			clickedAdjSquares.length < SHIP_SIZE &&
+			!clickedAdjSquares.some((val) => val.x === x && val.y === y)
 		) {
 			if (
-				clickedSquares.every((val) => val.y === y) &&
-				clickedSquares.some(
+				clickedAdjSquares.every((val) => val.y === y) &&
+				clickedAdjSquares.some(
 					(val) =>
 						val.x.charCodeAt() - x.charCodeAt() === 1 ||
 						val.x.charCodeAt() - x.charCodeAt() === -1
 				)
 			) {
-				clickedSquares.push({ x: x, y: y })
+				clickedAdjSquares.push({ x: x, y: y })
 				grid.set(x + y, MARKER_TYPE_SHIP)
 			} else if (
-				clickedSquares.every((val) => val.x === x) &&
-				clickedSquares.some((val) => val.y - y === 1 || val.y - y === -1)
+				clickedAdjSquares.every((val) => val.x === x) &&
+				clickedAdjSquares.some((val) => val.y - y === 1 || val.y - y === -1)
 			) {
-				clickedSquares.push({ x: x, y: y })
+				clickedAdjSquares.push({ x: x, y: y })
 				grid.set(x + y, MARKER_TYPE_SHIP)
 			}
 		}
 	}
 
 	renderSquare (x, y) {
+		const marker = this.state.grid.get(x + y)
+
+		if (!this.props.showShipMarker && marker === MARKER_TYPE_SHIP) {
+			return (
+				<Square
+					key={x + y}
+					testId={x + y}
+					customStyle={''}
+					onClick={() => this.handleClick(x, y)}
+				/>
+			)
+		}
+
 		return (
 			<Square
 				key={x + y}
 				testId={x + y}
-				value={this.state.grid.get(x + y)}
+				customStyle={marker}
 				onClick={() => this.handleClick(x, y)}
 			/>
 		)
@@ -115,7 +150,7 @@ class Board extends React.Component {
 		}
 
 		return (
-			<div className="container">
+			<div className="board">
 				<div className="column-label">
 					<div>1</div>
 					<div>2</div>
@@ -144,6 +179,13 @@ class Board extends React.Component {
 			</div>
 		)
 	}
+}
+
+Board.propTypes = {
+	showShipMarker: PropTypes.bool.isRequired,
+	onShipHasSunk: PropTypes.func.isRequired,
+	onEnemyEndOfTurn: PropTypes.func.isRequired,
+	onShipPlacement: PropTypes.func.isRequired
 }
 
 export default Board

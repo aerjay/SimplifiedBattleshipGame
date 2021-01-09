@@ -18,7 +18,8 @@
 	position: relative;
 	display: block;
 }
-.game-board {
+
+.player-container {
 	position: relative;
 	display: flex;
 	flex-wrap: wrap;
@@ -42,7 +43,7 @@
 	justify-content: space-around;
 }
 
-.container {
+.board {
 	flex: 1;
 	display: flex;
 	flex-flow: column wrap;
@@ -67,4 +68,12 @@
 
 .ship {
 	background-color: blue;
+}
+
+.hide-board {
+	visibility: hidden;
+}
+
+.unclickable-board{
+	pointer-events: none
 }
