@@ -4,6 +4,9 @@ import Player from './Player'
 
 const PLAYER_ONE_NAME = 'Player 1'
 const PLAYER_TWO_NAME = 'Player 2'
+const HIDE_BOARD_CSS = 'hide-board'
+const UNCLICKABLE_BOARD_CSS = 'unclickable-board'
+const CONTAINER_NAME_CSS = 'game'
 
 class Game extends React.Component {
 	constructor (props) {
@@ -42,8 +45,8 @@ class Game extends React.Component {
 	};
 
 	renderPlayer (name, hideBoard, showShipOnBoard, unclickableBoard = false) {
-		let customStyle = hideBoard ? 'hide-board' : ''
-		customStyle = unclickableBoard ? `${customStyle} unclickable-board` : customStyle
+		let customStyle = hideBoard ? HIDE_BOARD_CSS : ''
+		customStyle = unclickableBoard ? `${customStyle} ${UNCLICKABLE_BOARD_CSS}` : customStyle
 
 		return (
 			<Player
@@ -86,7 +89,7 @@ class Game extends React.Component {
 			players.push(this.renderPlayer(PLAYER_TWO_NAME, false, true, true))
 		}
 
-		return <div className="game">{players}</div>
+		return <div className={CONTAINER_NAME_CSS}>{players}</div>
 	}
 }
 

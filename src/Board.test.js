@@ -5,10 +5,10 @@ import userEvent from '@testing-library/user-event'
 
 const BOARD_SIZE = 10
 const BOARD_A_CHAR_CODE = 'A'.charCodeAt()
-const MARKER_TYPE_SHIP = 'ship'
-const MARKER_TYPE_HIT = 'hit'
-const MARKER_TYPE_MISS = 'miss'
-const MARKER_TYPE_EMPTY = 'none'
+const MARKER_TYPE_SHIP_CSS = 'ship'
+const MARKER_TYPE_HIT_CSS = 'hit'
+const MARKER_TYPE_MISS_CSS = 'miss'
+const MARKER_TYPE_EMPTY_CSS = 'none'
 
 test('renders all the squares', async () => {
 	render(
@@ -23,7 +23,7 @@ test('renders all the squares', async () => {
 	const squares = await screen.findAllByRole('button')
 
 	expect(squares).toHaveLength(BOARD_SIZE * BOARD_SIZE)
-	squares.forEach((square) => expect(square).toHaveClass(MARKER_TYPE_EMPTY))
+	squares.forEach((square) => expect(square).toHaveClass(MARKER_TYPE_EMPTY_CSS))
 })
 
 test('renders column labels', () => {
@@ -73,7 +73,7 @@ test('does not change square\'s marker type to ship on click when showShipMarker
 
 	userEvent.click(a1)
 
-	expect(a1).not.toHaveClass(MARKER_TYPE_SHIP)
+	expect(a1).not.toHaveClass(MARKER_TYPE_SHIP_CSS)
 })
 
 test('changes square\'s marker type to ship on click when showShipMarker is enabled', () => {
@@ -89,7 +89,7 @@ test('changes square\'s marker type to ship on click when showShipMarker is enab
 
 	userEvent.click(a1)
 
-	expect(a1).toHaveClass(MARKER_TYPE_SHIP)
+	expect(a1).toHaveClass(MARKER_TYPE_SHIP_CSS)
 })
 
 test('changes square\'s marker type to ship on double click', () => {
@@ -105,7 +105,7 @@ test('changes square\'s marker type to ship on double click', () => {
 
 	userEvent.click(a1)
 
-	expect(a1).toHaveClass(MARKER_TYPE_SHIP)
+	expect(a1).toHaveClass(MARKER_TYPE_SHIP_CSS)
 })
 
 test('changes the marker type of the first selected square to ship when clicking non-neighbouring squares', () => {
@@ -127,10 +127,10 @@ test('changes the marker type of the first selected square to ship when clicking
 	userEvent.click(c2)
 	userEvent.click(a10)
 
-	expect(i3).toHaveClass(MARKER_TYPE_SHIP)
-	expect(e6).toHaveClass(MARKER_TYPE_EMPTY)
-	expect(c2).toHaveClass(MARKER_TYPE_EMPTY)
-	expect(a10).toHaveClass(MARKER_TYPE_EMPTY)
+	expect(i3).toHaveClass(MARKER_TYPE_SHIP_CSS)
+	expect(e6).toHaveClass(MARKER_TYPE_EMPTY_CSS)
+	expect(c2).toHaveClass(MARKER_TYPE_EMPTY_CSS)
+	expect(a10).toHaveClass(MARKER_TYPE_EMPTY_CSS)
 })
 
 test('changes the marker type of the first three distinct horizontal neighbouring squares to ship', () => {
@@ -152,10 +152,10 @@ test('changes the marker type of the first three distinct horizontal neighbourin
 	userEvent.click(g10)
 	userEvent.click(e9)
 
-	expect(f9).toHaveClass(MARKER_TYPE_SHIP)
-	expect(g9).toHaveClass(MARKER_TYPE_SHIP)
-	expect(g10).toHaveClass(MARKER_TYPE_EMPTY)
-	expect(e9).toHaveClass(MARKER_TYPE_SHIP)
+	expect(f9).toHaveClass(MARKER_TYPE_SHIP_CSS)
+	expect(g9).toHaveClass(MARKER_TYPE_SHIP_CSS)
+	expect(g10).toHaveClass(MARKER_TYPE_EMPTY_CSS)
+	expect(e9).toHaveClass(MARKER_TYPE_SHIP_CSS)
 })
 
 test('changes the marker type of the first three distinct vertical neighbouring squares to ship', () => {
@@ -177,10 +177,10 @@ test('changes the marker type of the first three distinct vertical neighbouring 
 	userEvent.click(c9)
 	userEvent.click(b7)
 
-	expect(b8).toHaveClass(MARKER_TYPE_SHIP)
-	expect(b9).toHaveClass(MARKER_TYPE_SHIP)
-	expect(c9).toHaveClass(MARKER_TYPE_EMPTY)
-	expect(b7).toHaveClass(MARKER_TYPE_SHIP)
+	expect(b8).toHaveClass(MARKER_TYPE_SHIP_CSS)
+	expect(b9).toHaveClass(MARKER_TYPE_SHIP_CSS)
+	expect(c9).toHaveClass(MARKER_TYPE_EMPTY_CSS)
+	expect(b7).toHaveClass(MARKER_TYPE_SHIP_CSS)
 })
 
 test('changes the marker type of the first three distinct horizontal neighbouring squares to ship and the rest to miss when clicking more than three squares', () => {
@@ -202,10 +202,10 @@ test('changes the marker type of the first three distinct horizontal neighbourin
 	userEvent.click(e1)
 	userEvent.click(f1)
 
-	expect(c1).toHaveClass(MARKER_TYPE_SHIP)
-	expect(d1).toHaveClass(MARKER_TYPE_SHIP)
-	expect(e1).toHaveClass(MARKER_TYPE_SHIP)
-	expect(f1).toHaveClass(MARKER_TYPE_MISS)
+	expect(c1).toHaveClass(MARKER_TYPE_SHIP_CSS)
+	expect(d1).toHaveClass(MARKER_TYPE_SHIP_CSS)
+	expect(e1).toHaveClass(MARKER_TYPE_SHIP_CSS)
+	expect(f1).toHaveClass(MARKER_TYPE_MISS_CSS)
 })
 
 test('changes the marker type of the first three distinct vertical neighbouring squares to ship when clicking more than three squares', () => {
@@ -227,10 +227,10 @@ test('changes the marker type of the first three distinct vertical neighbouring 
 	userEvent.click(e9)
 	userEvent.click(f7)
 
-	expect(f8).toHaveClass(MARKER_TYPE_SHIP)
-	expect(f9).toHaveClass(MARKER_TYPE_SHIP)
-	expect(e9).toHaveClass(MARKER_TYPE_EMPTY)
-	expect(f7).toHaveClass(MARKER_TYPE_SHIP)
+	expect(f8).toHaveClass(MARKER_TYPE_SHIP_CSS)
+	expect(f9).toHaveClass(MARKER_TYPE_SHIP_CSS)
+	expect(e9).toHaveClass(MARKER_TYPE_EMPTY_CSS)
+	expect(f7).toHaveClass(MARKER_TYPE_SHIP_CSS)
 })
 
 test('only changes the marker type of squares that has ship to hit by re-clicking them and the rest as miss', () => {
@@ -259,12 +259,12 @@ test('only changes the marker type of squares that has ship to hit by re-clickin
 	userEvent.click(f9)
 	userEvent.click(e1)
 
-	expect(c1).toHaveClass(MARKER_TYPE_HIT)
-	expect(d1).toHaveClass(MARKER_TYPE_HIT)
-	expect(e1).toHaveClass(MARKER_TYPE_HIT)
-	expect(f7).toHaveClass(MARKER_TYPE_MISS)
-	expect(f8).toHaveClass(MARKER_TYPE_MISS)
-	expect(f9).toHaveClass(MARKER_TYPE_MISS)
+	expect(c1).toHaveClass(MARKER_TYPE_HIT_CSS)
+	expect(d1).toHaveClass(MARKER_TYPE_HIT_CSS)
+	expect(e1).toHaveClass(MARKER_TYPE_HIT_CSS)
+	expect(f7).toHaveClass(MARKER_TYPE_MISS_CSS)
+	expect(f8).toHaveClass(MARKER_TYPE_MISS_CSS)
+	expect(f9).toHaveClass(MARKER_TYPE_MISS_CSS)
 })
 
 test("not allowed to click any squares after setting three squares' marker type to hit", () => {
@@ -293,12 +293,12 @@ test("not allowed to click any squares after setting three squares' marker type 
 	userEvent.click(f1)
 	userEvent.click(a10)
 
-	expect(f8).toHaveClass(MARKER_TYPE_HIT)
-	expect(f9).toHaveClass(MARKER_TYPE_HIT)
-	expect(f10).toHaveClass(MARKER_TYPE_HIT)
-	expect(a1).toHaveClass(MARKER_TYPE_EMPTY)
-	expect(f1).toHaveClass(MARKER_TYPE_EMPTY)
-	expect(a10).toHaveClass(MARKER_TYPE_EMPTY)
+	expect(f8).toHaveClass(MARKER_TYPE_HIT_CSS)
+	expect(f9).toHaveClass(MARKER_TYPE_HIT_CSS)
+	expect(f10).toHaveClass(MARKER_TYPE_HIT_CSS)
+	expect(a1).toHaveClass(MARKER_TYPE_EMPTY_CSS)
+	expect(f1).toHaveClass(MARKER_TYPE_EMPTY_CSS)
+	expect(a10).toHaveClass(MARKER_TYPE_EMPTY_CSS)
 })
 
 test("calls onShipPlacement handler once after setting three neighbouring squares' marker type to ship", () => {
@@ -319,9 +319,9 @@ test("calls onShipPlacement handler once after setting three neighbouring square
 	userEvent.click(f9)
 	userEvent.click(f10)
 
-	expect(f8).toHaveClass(MARKER_TYPE_SHIP)
-	expect(f9).toHaveClass(MARKER_TYPE_SHIP)
-	expect(f10).toHaveClass(MARKER_TYPE_SHIP)
+	expect(f8).toHaveClass(MARKER_TYPE_SHIP_CSS)
+	expect(f9).toHaveClass(MARKER_TYPE_SHIP_CSS)
+	expect(f10).toHaveClass(MARKER_TYPE_SHIP_CSS)
 	expect(handleShipPlacement).toHaveBeenCalledTimes(1)
 })
 
@@ -346,9 +346,9 @@ test("calls onShipHasSunk handler once after setting three squares' marker type 
 	userEvent.click(f9)
 	userEvent.click(f10)
 
-	expect(f8).toHaveClass(MARKER_TYPE_HIT)
-	expect(f9).toHaveClass(MARKER_TYPE_HIT)
-	expect(f10).toHaveClass(MARKER_TYPE_HIT)
+	expect(f8).toHaveClass(MARKER_TYPE_HIT_CSS)
+	expect(f9).toHaveClass(MARKER_TYPE_HIT_CSS)
+	expect(f10).toHaveClass(MARKER_TYPE_HIT_CSS)
 	expect(handleShipHasSunk).toHaveBeenCalledTimes(1)
 })
 
@@ -371,9 +371,9 @@ test('calls onEnemyEndOfTurn handler once after setting a square\'s marker type 
 
 	userEvent.click(f8)
 
-	expect(f8).toHaveClass(MARKER_TYPE_HIT)
-	expect(f9).toHaveClass(MARKER_TYPE_SHIP)
-	expect(f10).toHaveClass(MARKER_TYPE_SHIP)
+	expect(f8).toHaveClass(MARKER_TYPE_HIT_CSS)
+	expect(f9).toHaveClass(MARKER_TYPE_SHIP_CSS)
+	expect(f10).toHaveClass(MARKER_TYPE_SHIP_CSS)
 	expect(handleEnemyEndOfTurn).toHaveBeenCalledTimes(1)
 })
 
@@ -397,9 +397,9 @@ test('calls onEnemyEndOfTurn handler once after setting a square\'s marker type 
 
 	userEvent.click(a1)
 
-	expect(f8).toHaveClass(MARKER_TYPE_SHIP)
-	expect(f9).toHaveClass(MARKER_TYPE_SHIP)
-	expect(f10).toHaveClass(MARKER_TYPE_SHIP)
-	expect(a1).toHaveClass(MARKER_TYPE_MISS)
+	expect(f8).toHaveClass(MARKER_TYPE_SHIP_CSS)
+	expect(f9).toHaveClass(MARKER_TYPE_SHIP_CSS)
+	expect(f10).toHaveClass(MARKER_TYPE_SHIP_CSS)
+	expect(a1).toHaveClass(MARKER_TYPE_MISS_CSS)
 	expect(handleEnemyEndOfTurn).toHaveBeenCalledTimes(1)
 })

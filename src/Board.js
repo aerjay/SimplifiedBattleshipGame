@@ -5,10 +5,15 @@ import PropTypes from 'prop-types'
 const BOARD_SIZE = 10
 const BOARD_A_CHAR_CODE = 'A'.charCodeAt()
 const SHIP_SIZE = 3
-const MARKER_TYPE_EMPTY = 'none'
-const MARKER_TYPE_SHIP = 'ship'
-const MARKER_TYPE_HIT = 'hit'
-const MARKER_TYPE_MISS = 'miss'
+const MARKER_TYPE_EMPTY_CSS = 'none'
+const MARKER_TYPE_SHIP_CSS = 'ship'
+const MARKER_TYPE_HIT_CSS = 'hit'
+const MARKER_TYPE_MISS_CSS = 'miss'
+const CONTAINER_NAME_CSS = 'board'
+const COLUMN_LABEL_CSS = 'column-label'
+const ROW_LABEL_CSS = 'row-label'
+const GRID_CSS = 'grid'
+const GRID_ROW_CSS = 'grid-row'
 
 class Board extends React.Component {
 	constructor (props) {
@@ -26,7 +31,10 @@ class Board extends React.Component {
 
 		for (let x = BOARD_A_CHAR_CODE; x < BOARD_A_CHAR_CODE + BOARD_SIZE; x++) {
 			for (let y = 1; y <= BOARD_SIZE; y++) {
-				grid.set(`${String.fromCharCode(x)}${y.toString()}`, MARKER_TYPE_EMPTY)
+				grid.set(
+					`${String.fromCharCode(x)}${y.toString()}`,
+					MARKER_TYPE_EMPTY_CSS
+				)
 			}
 		}
 		return grid
@@ -46,14 +54,14 @@ class Board extends React.Component {
 		if (!hasShipPlaced) {
 			this.placeShipOnBoard(clickedAdjSquares, x, y, grid)
 		} else {
-			if (grid.get(x + y) === MARKER_TYPE_SHIP) {
-				grid.set(x + y, MARKER_TYPE_HIT)
+			if (grid.get(x + y) === MARKER_TYPE_SHIP_CSS) {
+				grid.set(x + y, MARKER_TYPE_HIT_CSS)
 				hasShipSunk = clickedAdjSquares.every(
-					(val) => grid.get(val.x + val.y) === MARKER_TYPE_HIT
+					(val) => grid.get(val.x + val.y) === MARKER_TYPE_HIT_CSS
 				)
 				hasEnemyAttackEnded = true
-			} else if (grid.get(x + y) === MARKER_TYPE_EMPTY) {
-				grid.set(x + y, MARKER_TYPE_MISS)
+			} else if (grid.get(x + y) === MARKER_TYPE_EMPTY_CSS) {
+				grid.set(x + y, MARKER_TYPE_MISS_CSS)
 				hasEnemyAttackEnded = true
 			}
 		}
@@ -82,7 +90,7 @@ class Board extends React.Component {
 	placeShipOnBoard (clickedAdjSquares, x, y, grid) {
 		if (clickedAdjSquares.length === 0) {
 			clickedAdjSquares.push({ x, y })
-			grid.set(x + y, MARKER_TYPE_SHIP)
+			grid.set(x + y, MARKER_TYPE_SHIP_CSS)
 		}
 
 		if (
@@ -98,13 +106,13 @@ class Board extends React.Component {
 				)
 			) {
 				clickedAdjSquares.push({ x: x, y: y })
-				grid.set(x + y, MARKER_TYPE_SHIP)
+				grid.set(x + y, MARKER_TYPE_SHIP_CSS)
 			} else if (
 				clickedAdjSquares.every((val) => val.x === x) &&
 				clickedAdjSquares.some((val) => val.y - y === 1 || val.y - y === -1)
 			) {
 				clickedAdjSquares.push({ x: x, y: y })
-				grid.set(x + y, MARKER_TYPE_SHIP)
+				grid.set(x + y, MARKER_TYPE_SHIP_CSS)
 			}
 		}
 	}
@@ -112,7 +120,7 @@ class Board extends React.Component {
 	renderSquare (x, y) {
 		const marker = this.state.grid.get(x + y)
 
-		if (!this.props.showShipMarker && marker === MARKER_TYPE_SHIP) {
+		if (!this.props.showShipMarker && marker === MARKER_TYPE_SHIP_CSS) {
 			return (
 				<Square
 					key={x + y}
@@ -143,15 +151,15 @@ class Board extends React.Component {
 				rows.push(this.renderSquare(String.fromCharCode(x), y))
 			}
 			grid.push(
-				<div key={y} className="board-row">
+				<div key={y} className={GRID_ROW_CSS}>
 					{rows}
 				</div>
 			)
 		}
 
 		return (
-			<div className="board">
-				<div className="column-label">
+			<div className={CONTAINER_NAME_CSS}>
+				<div className={COLUMN_LABEL_CSS}>
 					<div>1</div>
 					<div>2</div>
 					<div>3</div>
@@ -163,7 +171,7 @@ class Board extends React.Component {
 					<div>9</div>
 					<div>10</div>
 				</div>
-				<div className="row-label">
+				<div className={ROW_LABEL_CSS}>
 					<div>A</div>
 					<div>B</div>
 					<div>C</div>
@@ -175,7 +183,7 @@ class Board extends React.Component {
 					<div>I</div>
 					<div>J</div>
 				</div>
-				<div className="grid">{grid}</div>
+				<div className={GRID_CSS}>{grid}</div>
 			</div>
 		)
 	}

@@ -77,3 +77,9 @@
 .unclickable-board{
 	pointer-events: none
 }
+
+.grid-row::after{
+	clear: both;
+  content: "";
+  display: table;
+}
