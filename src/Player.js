@@ -17,7 +17,7 @@ class Player extends React.Component {
 
 	render () {
 		return (
-			<div className={'game-board ' + this.props.customStyle}>
+			<div className={'player-container ' + this.props.customStyle}>
 				<h3>{this.props.name}</h3>
 				<Board
 					showShipMarker={this.props.showShipOnBoard}
