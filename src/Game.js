@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import './Game.css'
 import Player from './Player'
 
 const PLAYER_ONE_NAME = 'Player 1'
