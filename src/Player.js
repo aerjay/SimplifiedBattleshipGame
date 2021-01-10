@@ -2,32 +2,32 @@ import React from 'react'
 import Board from './Board'
 import PropTypes from 'prop-types'
 
-class Player extends React.Component {
-	handleShipHasSunk = () => {
-		this.props.onPlayerHasLost(this.props.name)
-	};
+const CONTAINER_NAME_CSS = 'player-container'
 
-	handleEnemyEndOfTurn = () => {
-		this.props.onEnemyEndOfTurn(this.props.name)
-	};
-
-	handleShipPlacement = () => {
-		this.props.onPlayerShipPlacement(this.props.name)
-	};
-
-	render () {
-		return (
-			<div className={'player-container ' + this.props.customStyle}>
-				<h3>{this.props.name}</h3>
-				<Board
-					showShipMarker={this.props.showShipOnBoard}
-					onShipHasSunk={this.handleShipHasSunk}
-					onEnemyEndOfTurn={this.handleEnemyEndOfTurn}
-					onShipPlacement={this.handleShipPlacement}
-				/>
-			</div>
-		)
+function Player (props) {
+	const handleShipHasSunk = () => {
+		props.onPlayerHasLost(props.name)
 	}
+
+	const handleEnemyEndOfTurn = () => {
+		props.onEnemyEndOfTurn(props.name)
+	}
+
+	const handleShipPlacement = () => {
+		props.onPlayerShipPlacement(props.name)
+	}
+
+	return (
+		<div className={`${CONTAINER_NAME_CSS} ${props.customStyle}`}>
+			<h3>{props.name}</h3>
+			<Board
+				showShipMarker={props.showShipOnBoard}
+				onShipHasSunk={handleShipHasSunk}
+				onEnemyEndOfTurn={handleEnemyEndOfTurn}
+				onShipPlacement={handleShipPlacement}
+			/>
+		</div>
+	)
 }
 
 Player.propTypes = {

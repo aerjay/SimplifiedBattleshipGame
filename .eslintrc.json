@@ -27,6 +27,8 @@
     ],
     "rules": {
 			"indent": ["error", "tab"],
-			"no-tabs": ["error", {"allowIndentationTabs": true}]
+			"no-tabs": ["error", {"allowIndentationTabs": true}],
+			"react-hooks/rules-of-hooks": "error",
+			"react-hooks/exhaustive-deps": "warn"
     }
 }

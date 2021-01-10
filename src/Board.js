@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Square from './Square'
 import PropTypes from 'prop-types'
 
@@ -15,18 +15,43 @@ const ROW_LABEL_CSS = 'row-label'
 const GRID_CSS = 'grid'
 const GRID_ROW_CSS = 'grid-row'
 
-class Board extends React.Component {
-	constructor (props) {
-		super(props)
-		this.state = {
-			grid: this.initGrid(),
-			clickedAdjSquares: [],
-			hasShipPlaced: false,
-			hasShipSunk: false
-		}
-	}
+function Board (props) {
+	const [grid, setGrid] = useState(initGrid())
+	const [clickedAdjSquares, setClickedAdjSquares] = useState([])
+	const [hasShipPlaced, setHasShipPlaced] = useState(false)
+	const [hasShipSunk, setHasShipSunk] = useState(false)
 
-	initGrid () {
+	return (
+		<div className={CONTAINER_NAME_CSS}>
+			<div className={COLUMN_LABEL_CSS}>
+				<div>1</div>
+				<div>2</div>
+				<div>3</div>
+				<div>4</div>
+				<div>5</div>
+				<div>6</div>
+				<div>7</div>
+				<div>8</div>
+				<div>9</div>
+				<div>10</div>
+			</div>
+			<div className={ROW_LABEL_CSS}>
+				<div>A</div>
+				<div>B</div>
+				<div>C</div>
+				<div>D</div>
+				<div>E</div>
+				<div>F</div>
+				<div>G</div>
+				<div>H</div>
+				<div>I</div>
+				<div>J</div>
+			</div>
+			<div className={GRID_CSS}>{renderGrid()}</div>
+		</div>
+	)
+
+	function initGrid () {
 		const grid = new Map()
 
 		for (let x = BOARD_A_CHAR_CODE; x < BOARD_A_CHAR_CODE + BOARD_SIZE; x++) {
@@ -40,54 +65,46 @@ class Board extends React.Component {
 		return grid
 	}
 
-	handleClick (x, y) {
-		const clickedAdjSquares = this.state.clickedAdjSquares.slice()
-		const grid = new Map(this.state.grid)
-		let hasShipSunk = this.state.hasShipSunk
-		let hasShipPlaced = this.state.hasShipPlaced
+	function handleClick (x, y) {
+		const clickedAdjSquaresCopy = clickedAdjSquares.slice()
+		const gridCopy = new Map(grid)
+		let hasShipJustSunk = hasShipSunk
 		let hasEnemyAttackEnded = false
 
-		if (hasShipSunk) {
-			return
-		}
+		if (hasShipSunk) return
 
 		if (!hasShipPlaced) {
-			this.placeShipOnBoard(clickedAdjSquares, x, y, grid)
+			placeShipOnBoard(clickedAdjSquaresCopy, x, y, gridCopy)
 		} else {
-			if (grid.get(x + y) === MARKER_TYPE_SHIP_CSS) {
-				grid.set(x + y, MARKER_TYPE_HIT_CSS)
-				hasShipSunk = clickedAdjSquares.every(
-					(val) => grid.get(val.x + val.y) === MARKER_TYPE_HIT_CSS
+			if (gridCopy.get(x + y) === MARKER_TYPE_SHIP_CSS) {
+				gridCopy.set(x + y, MARKER_TYPE_HIT_CSS)
+				hasShipJustSunk = clickedAdjSquaresCopy.every(
+					(val) => gridCopy.get(val.x + val.y) === MARKER_TYPE_HIT_CSS
 				)
 				hasEnemyAttackEnded = true
-			} else if (grid.get(x + y) === MARKER_TYPE_EMPTY_CSS) {
-				grid.set(x + y, MARKER_TYPE_MISS_CSS)
+			} else if (gridCopy.get(x + y) === MARKER_TYPE_EMPTY_CSS) {
+				gridCopy.set(x + y, MARKER_TYPE_MISS_CSS)
 				hasEnemyAttackEnded = true
 			}
 		}
 
-		if (!hasShipPlaced && clickedAdjSquares.length === SHIP_SIZE) {
-			hasShipPlaced = true
-			this.props.onShipPlacement()
+		if (!hasShipPlaced && clickedAdjSquaresCopy.length === SHIP_SIZE) {
+			setHasShipPlaced(true)
+			props.onShipPlacement()
 		}
 
-		if (hasShipSunk) {
-			this.props.onShipHasSunk()
+		if (hasShipJustSunk) {
+			setHasShipSunk(hasShipJustSunk)
+			props.onShipHasSunk()
 		}
 
-		if (hasEnemyAttackEnded) {
-			this.props.onEnemyEndOfTurn()
-		}
+		if (hasEnemyAttackEnded) props.onEnemyEndOfTurn()
 
-		this.setState({
-			grid: grid,
-			clickedAdjSquares: clickedAdjSquares,
-			hasShipPlaced: hasShipPlaced,
-			hasShipSunk: hasShipSunk
-		})
+		setGrid(gridCopy)
+		setClickedAdjSquares(clickedAdjSquaresCopy)
 	}
 
-	placeShipOnBoard (clickedAdjSquares, x, y, grid) {
+	function placeShipOnBoard (clickedAdjSquares, x, y, grid) {
 		if (clickedAdjSquares.length === 0) {
 			clickedAdjSquares.push({ x, y })
 			grid.set(x + y, MARKER_TYPE_SHIP_CSS)
@@ -117,16 +134,16 @@ class Board extends React.Component {
 		}
 	}
 
-	renderSquare (x, y) {
-		const marker = this.state.grid.get(x + y)
+	function renderSquare (x, y) {
+		const marker = grid.get(x + y)
 
-		if (!this.props.showShipMarker && marker === MARKER_TYPE_SHIP_CSS) {
+		if (!props.showShipMarker && marker === MARKER_TYPE_SHIP_CSS) {
 			return (
 				<Square
 					key={x + y}
 					testId={x + y}
 					customStyle={''}
-					onClick={() => this.handleClick(x, y)}
+					onClick={() => handleClick(x, y)}
 				/>
 			)
 		}
@@ -136,19 +153,19 @@ class Board extends React.Component {
 				key={x + y}
 				testId={x + y}
 				customStyle={marker}
-				onClick={() => this.handleClick(x, y)}
+				onClick={() => handleClick(x, y)}
 			/>
 		)
 	}
 
-	render () {
+	function renderGrid () {
 		const grid = []
 		let rows = []
 
 		for (let y = 1; y <= BOARD_SIZE; y++) {
 			rows = []
 			for (let x = BOARD_A_CHAR_CODE; x < BOARD_A_CHAR_CODE + BOARD_SIZE; x++) {
-				rows.push(this.renderSquare(String.fromCharCode(x), y))
+				rows.push(renderSquare(String.fromCharCode(x), y))
 			}
 			grid.push(
 				<div key={y} className={GRID_ROW_CSS}>
@@ -156,36 +173,7 @@ class Board extends React.Component {
 				</div>
 			)
 		}
-
-		return (
-			<div className={CONTAINER_NAME_CSS}>
-				<div className={COLUMN_LABEL_CSS}>
-					<div>1</div>
-					<div>2</div>
-					<div>3</div>
-					<div>4</div>
-					<div>5</div>
-					<div>6</div>
-					<div>7</div>
-					<div>8</div>
-					<div>9</div>
-					<div>10</div>
-				</div>
-				<div className={ROW_LABEL_CSS}>
-					<div>A</div>
-					<div>B</div>
-					<div>C</div>
-					<div>D</div>
-					<div>E</div>
-					<div>F</div>
-					<div>G</div>
-					<div>H</div>
-					<div>I</div>
-					<div>J</div>
-				</div>
-				<div className={GRID_CSS}>{grid}</div>
-			</div>
-		)
+		return grid
 	}
 }
 
