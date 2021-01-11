@@ -30,6 +30,14 @@ body {
 }
 
 .column-label {
+	left: 15px;
+	position: relative;
+	display: flex;
+	width: 340px;
+	justify-content: space-around;
+}
+
+.row-label {
 	top: 20px;
 	position: absolute;
 	display: flex;
@@ -37,14 +45,6 @@ body {
 	height: 320px;
 	flex-direction: column;
 	align-self: flex-start;
-}
-
-.row-label {
-	left: 15px;
-	position: relative;
-	display: flex;
-	width: 340px;
-	justify-content: space-around;
 }
 
 .board {
