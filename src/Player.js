@@ -2,8 +2,6 @@ import React from 'react'
 import Board from './Board'
 import PropTypes from 'prop-types'
 
-const CONTAINER_NAME_CSS = 'player-container'
-
 function Player (props) {
 	const handleShipHasSunk = () => {
 		props.onPlayerHasLost(props.name)
@@ -18,7 +16,7 @@ function Player (props) {
 	}
 
 	return (
-		<div className={`${CONTAINER_NAME_CSS} ${props.customStyle}`}>
+		<div className={`player-container ${props.customStyle}`}>
 			<h3>{props.name}</h3>
 			<Board
 				showShipMarker={props.showShipOnBoard}

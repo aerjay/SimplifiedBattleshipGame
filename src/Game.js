@@ -3,9 +3,6 @@ import Player from './Player'
 
 const PLAYER_ONE_NAME = 'Player 1'
 const PLAYER_TWO_NAME = 'Player 2'
-const HIDE_BOARD_CSS = 'hide-board'
-const UNCLICKABLE_BOARD_CSS = 'unclickable-board'
-const CONTAINER_NAME_CSS = 'game'
 
 function Game () {
 	const [gameOver, setGameOver] = useState(false)
@@ -42,7 +39,7 @@ function Game () {
 		setShipsOnBoard(shipsOnBoardCopy)
 	}
 
-	return <div className={CONTAINER_NAME_CSS}>{renderPlayers()}</div>
+	return <div className='game'>{renderPlayers()}</div>
 
 	function renderPlayers () {
 		const shipsOnBoardValues = [...shipsOnBoard.values()]
@@ -81,9 +78,9 @@ function Game () {
 		showShipOnBoard,
 		unclickableBoard = false
 	) {
-		let customStyle = hideBoard ? HIDE_BOARD_CSS : ''
+		let customStyle = hideBoard ? 'hide-board' : ''
 		customStyle = unclickableBoard
-			? `${customStyle} ${UNCLICKABLE_BOARD_CSS}`
+			? `${customStyle} unclickable-board`
 			: customStyle
 
 		return (

@@ -9,11 +9,10 @@ const MARKER_TYPE_EMPTY_CSS = 'none'
 const MARKER_TYPE_SHIP_CSS = 'ship'
 const MARKER_TYPE_HIT_CSS = 'hit'
 const MARKER_TYPE_MISS_CSS = 'miss'
-const CONTAINER_NAME_CSS = 'board'
-const COLUMN_LABEL_CSS = 'column-label'
-const ROW_LABEL_CSS = 'row-label'
-const GRID_CSS = 'grid'
-const GRID_ROW_CSS = 'grid-row'
+const ROW_LABELS = Array.from(Array(BOARD_SIZE + 1).keys()).splice(1)
+const COLUMN_LABELS = Array.from(Array(BOARD_SIZE).keys()).map((elem) =>
+	String.fromCharCode(elem + BOARD_A_CHAR_CODE)
+)
 
 function Board (props) {
 	const [grid, setGrid] = useState(initGrid())
@@ -22,46 +21,30 @@ function Board (props) {
 	const [hasShipSunk, setHasShipSunk] = useState(false)
 
 	return (
-		<div className={CONTAINER_NAME_CSS}>
-			<div className={COLUMN_LABEL_CSS}>
-				<div>1</div>
-				<div>2</div>
-				<div>3</div>
-				<div>4</div>
-				<div>5</div>
-				<div>6</div>
-				<div>7</div>
-				<div>8</div>
-				<div>9</div>
-				<div>10</div>
+		<div className='board'>
+			<div className='row-label'>
+				{ROW_LABELS.map((elem) => (
+					<div key={elem}>{elem}</div>
+				))}
 			</div>
-			<div className={ROW_LABEL_CSS}>
-				<div>A</div>
-				<div>B</div>
-				<div>C</div>
-				<div>D</div>
-				<div>E</div>
-				<div>F</div>
-				<div>G</div>
-				<div>H</div>
-				<div>I</div>
-				<div>J</div>
+			<div className='column-label'>
+				{COLUMN_LABELS.map((elem) => (
+					<div key={elem}>{elem}</div>
+				))}
 			</div>
-			<div className={GRID_CSS}>{renderGrid()}</div>
+			<div className='grid'>{renderGrid()}</div>
 		</div>
 	)
 
 	function initGrid () {
 		const grid = new Map()
 
-		for (let x = BOARD_A_CHAR_CODE; x < BOARD_A_CHAR_CODE + BOARD_SIZE; x++) {
-			for (let y = 1; y <= BOARD_SIZE; y++) {
-				grid.set(
-					`${String.fromCharCode(x)}${y.toString()}`,
-					MARKER_TYPE_EMPTY_CSS
-				)
-			}
-		}
+		ROW_LABELS.forEach((row) => {
+			COLUMN_LABELS.forEach((col) => {
+				grid.set(col + row, MARKER_TYPE_EMPTY_CSS)
+			})
+		})
+
 		return grid
 	}
 
@@ -160,19 +143,20 @@ function Board (props) {
 
 	function renderGrid () {
 		const grid = []
-		let rows = []
+		let aRow = []
 
-		for (let y = 1; y <= BOARD_SIZE; y++) {
-			rows = []
-			for (let x = BOARD_A_CHAR_CODE; x < BOARD_A_CHAR_CODE + BOARD_SIZE; x++) {
-				rows.push(renderSquare(String.fromCharCode(x), y))
-			}
+		ROW_LABELS.forEach((row, rowIndex) => {
+			aRow = []
+			COLUMN_LABELS.forEach((col) => {
+				aRow.push(renderSquare(col, row))
+			})
 			grid.push(
-				<div key={y} className={GRID_ROW_CSS}>
-					{rows}
+				<div key={rowIndex} className='grid-row'>
+					{aRow}
 				</div>
 			)
-		}
+		})
+
 		return grid
 	}
 }
