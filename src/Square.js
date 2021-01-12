@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 function Square (props) {
 	return (
 		<button
-			className={'square ' + props.customStyle}
+			className={props.customStyle}
 			data-testid={props.testId}
 			onClick={props.onClick}
 		/>

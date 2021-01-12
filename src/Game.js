@@ -39,7 +39,8 @@ function Game () {
 		setShipsOnBoard(shipsOnBoardCopy)
 	}
 
-	return <div className='game'>{renderPlayers()}</div>
+	// Add another div for game-info in middle, use arr.splice(1, 0, 'item to add');
+	return <div className='split'>{renderPlayers()}</div>
 
 	function renderPlayers () {
 		const shipsOnBoardValues = [...shipsOnBoard.values()]

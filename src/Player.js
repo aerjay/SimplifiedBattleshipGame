@@ -17,7 +17,7 @@ function Player (props) {
 
 	return (
 		<div className={`player-container ${props.customStyle}`}>
-			<h3>{props.name}</h3>
+			<h3 className='text-center'>{props.name}</h3>
 			<Board
 				showShipMarker={props.showShipOnBoard}
 				onShipHasSunk={handleShipHasSunk}
