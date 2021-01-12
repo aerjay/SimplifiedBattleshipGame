@@ -98,7 +98,7 @@ function Game () {
 		} else {
 			gameParts.push(renderAPlayer(PLAYER_ONE_NAME, false, true, true))
 			const opponent = whoWon === PLAYER_ONE_NAME ? PLAYER_TWO_NAME : PLAYER_ONE_NAME
-			gameParts.push(renderGameInfo(`Congratulations ${whoWon}!! You sunk your ${opponent}'s ship.`, true))
+			gameParts.push(renderGameInfo(`Congratulations ${whoWon}!! You sunk ${opponent}'s ship.`, true))
 			gameParts.push(renderAPlayer(PLAYER_TWO_NAME, false, true, true))
 		}
 
