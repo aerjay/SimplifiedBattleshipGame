@@ -20,7 +20,7 @@ test('renders a player with passed properties', () => {
 	const player = screen.getByText(name).closest('div')
 
 	expect(player).toBeInTheDocument()
-	expect(player).toHaveClass('player-container ' + customStyle)
+	expect(player).toHaveClass('split-child-container  ' + customStyle)
 })
 
 test('renders a player with default customStyle', () => {
@@ -37,7 +37,7 @@ test('renders a player with default customStyle', () => {
 	)
 	const player = screen.getByText(name).closest('div')
 
-	expect(player).toHaveClass('player-container ' + customStyle)
+	expect(player).toHaveClass('split-child-container  ' + customStyle)
 })
 
 test('calls onPlayerShipPlacement handler once after ship has been placed on board', () => {
