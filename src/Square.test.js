@@ -10,17 +10,16 @@ test('renders a square with passed properties', () => {
 
 	const square = screen.getByTestId(testId)
 
-	expect(square).toHaveClass('square ' + customStyle)
+	expect(square).toHaveClass(customStyle)
 })
 
 test('renders a square with default customStyle', () => {
 	const testId = '0'
-	const customStyle = ''
 	render(<Square testId={testId} onClick={() => {}}/>)
 
 	const square = screen.getByTestId(testId)
 
-	expect(square).toHaveClass('square ' + customStyle)
+	expect(square.className.length).toEqual(0)
 })
 
 test('calls onCLick handler on click', () => {

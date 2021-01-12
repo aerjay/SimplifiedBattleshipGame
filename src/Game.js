@@ -5,7 +5,7 @@ const PLAYER_ONE_NAME = 'Player 1'
 const PLAYER_TWO_NAME = 'Player 2'
 
 function Game () {
-	const [gameOver, setGameOver] = useState(false)
+	const [whoWon, setWhoWon] = useState('')
 	const [whoseTurn, setWhoseTurn] = useState(PLAYER_ONE_NAME)
 	const [shipsOnBoard, setShipsOnBoard] = useState(
 		new Map([
@@ -14,24 +14,18 @@ function Game () {
 		])
 	)
 
-	const handleEnemyEndOfTurn = (playerName) => {
-		console.log('Your turn ' + playerName) // TODO: Remove these
-
+	function handleEnemyEndOfTurn (playerName) {
 		setWhoseTurn(playerName)
 	}
 
-	const handlePlayerHasLost = (playerName) => {
-		const winner =
-			playerName === PLAYER_ONE_NAME ? PLAYER_TWO_NAME : PLAYER_ONE_NAME
+	function handlePlayerHasLost (playerName) {
+		const winner = playerName === PLAYER_ONE_NAME ? PLAYER_TWO_NAME : PLAYER_ONE_NAME
 
-		console.log('You lost ' + playerName)
-		console.log('Congratulations ' + winner)
-		setGameOver(true)
+		setWhoWon(winner)
 	}
 
-	const handlePlayerShipPlacement = (playerName) => {
-		const whoseTurn =
-			playerName === PLAYER_ONE_NAME ? PLAYER_TWO_NAME : PLAYER_ONE_NAME
+	function handlePlayerShipPlacement (playerName) {
+		const whoseTurn = playerName === PLAYER_ONE_NAME ? PLAYER_TWO_NAME : PLAYER_ONE_NAME
 		const shipsOnBoardCopy = new Map(shipsOnBoard)
 
 		shipsOnBoardCopy.set(playerName, true)
@@ -39,49 +33,9 @@ function Game () {
 		setShipsOnBoard(shipsOnBoardCopy)
 	}
 
-	return <div className='game'>{renderPlayers()}</div>
-
-	function renderPlayers () {
-		const shipsOnBoardValues = [...shipsOnBoard.values()]
-		const players = new Array(2)
-
-		if (!gameOver) {
-			if (shipsOnBoardValues.every((val) => val === true)) {
-				if (whoseTurn === PLAYER_ONE_NAME) {
-					players.push(renderPlayer(PLAYER_ONE_NAME, true, false))
-					players.push(renderPlayer(PLAYER_TWO_NAME, false, false))
-				} else {
-					players.push(renderPlayer(PLAYER_ONE_NAME, false, false))
-					players.push(renderPlayer(PLAYER_TWO_NAME, true, false))
-				}
-			} else {
-				if (whoseTurn === PLAYER_ONE_NAME) {
-					players.push(renderPlayer(PLAYER_ONE_NAME, false, true))
-					players.push(renderPlayer(PLAYER_TWO_NAME, true, true))
-				} else {
-					players.push(renderPlayer(PLAYER_ONE_NAME, true, true))
-					players.push(renderPlayer(PLAYER_TWO_NAME, false, true))
-				}
-			}
-		} else {
-			// TODO: Add a win alert
-			players.push(renderPlayer(PLAYER_ONE_NAME, false, true, true))
-			players.push(renderPlayer(PLAYER_TWO_NAME, false, true, true))
-		}
-
-		return players
-	}
-
-	function renderPlayer (
-		name,
-		hideBoard,
-		showShipOnBoard,
-		unclickableBoard = false
-	) {
+	function renderAPlayer (name, hideBoard, showShipOnBoard, unclickableBoard = false) {
 		let customStyle = hideBoard ? 'hide-board' : ''
-		customStyle = unclickableBoard
-			? `${customStyle} unclickable-board`
-			: customStyle
+		customStyle = unclickableBoard ? `${customStyle} unclickable-board` : customStyle
 
 		return (
 			<Player
@@ -95,6 +49,63 @@ function Game () {
 			/>
 		)
 	}
+
+	function renderGameInfo (info, onWin = false) {
+		if (!onWin) {
+			return (
+				<div key="info" className="split-child-container">
+					<p className="text-center">{info}</p>
+				</div>
+			)
+		}
+
+		return (
+			<div key="info" className="split-child-container">
+				<p className="text-center">{info}</p>
+				<button className="reset-button" onClick={() => window.location.reload()}>
+					Play again!
+				</button>
+			</div>
+		)
+	}
+
+	function renderGame () {
+		const shipsOnBoardValues = [...shipsOnBoard.values()]
+		const gameParts = new Array(3)
+
+		if (!whoWon) {
+			if (shipsOnBoardValues.every((val) => val === true)) {
+				if (whoseTurn === PLAYER_ONE_NAME) {
+					gameParts.push(renderAPlayer(PLAYER_ONE_NAME, true, false))
+					gameParts.push(renderGameInfo(`${PLAYER_ONE_NAME} attack ${PLAYER_TWO_NAME} by clicking any square.`))
+					gameParts.push(renderAPlayer(PLAYER_TWO_NAME, false, false))
+				} else {
+					gameParts.push(renderAPlayer(PLAYER_ONE_NAME, false, false))
+					gameParts.push(renderGameInfo(`${PLAYER_TWO_NAME} attack ${PLAYER_ONE_NAME} by clicking any square.`))
+					gameParts.push(renderAPlayer(PLAYER_TWO_NAME, true, false))
+				}
+			} else {
+				if (whoseTurn === PLAYER_ONE_NAME) {
+					gameParts.push(renderAPlayer(PLAYER_ONE_NAME, false, true))
+					gameParts.push(renderGameInfo(`${PLAYER_ONE_NAME} place your ship on board by clicking 3 adjacent squares horizontally or vertically.`))
+					gameParts.push(renderAPlayer(PLAYER_TWO_NAME, true, true))
+				} else {
+					gameParts.push(renderAPlayer(PLAYER_ONE_NAME, true, true))
+					gameParts.push(renderGameInfo(`${PLAYER_TWO_NAME} place your ship on board by clicking 3 adjacent squares horizontally or vertically.`))
+					gameParts.push(renderAPlayer(PLAYER_TWO_NAME, false, true))
+				}
+			}
+		} else {
+			gameParts.push(renderAPlayer(PLAYER_ONE_NAME, false, true, true))
+			const opponent = whoWon === PLAYER_ONE_NAME ? PLAYER_TWO_NAME : PLAYER_ONE_NAME
+			gameParts.push(renderGameInfo(`Congratulations ${whoWon}!! You sunk your ${opponent}'s ship.`, true))
+			gameParts.push(renderAPlayer(PLAYER_TWO_NAME, false, true, true))
+		}
+
+		return gameParts
+	}
+
+	return <div className="split">{renderGame()}</div>
 }
 
 export default Game
