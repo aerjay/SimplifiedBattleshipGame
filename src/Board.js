@@ -22,17 +22,19 @@ function Board (props) {
 
 	return (
 		<div className='board'>
-			<div className='row-label'>
-				{ROW_LABELS.map((elem) => (
-					<div key={elem}>{elem}</div>
-				))}
-			</div>
 			<div className='column-label'>
 				{COLUMN_LABELS.map((elem) => (
 					<div key={elem}>{elem}</div>
 				))}
 			</div>
-			<div className='grid'>{renderGrid()}</div>
+			<div>
+				<div className='grid'>{renderGrid()}</div>
+				<div className='row-label'>
+					{ROW_LABELS.map((elem) => (
+						<div key={elem}>{elem}</div>
+					))}
+				</div>
+			</div>
 		</div>
 	)
 
