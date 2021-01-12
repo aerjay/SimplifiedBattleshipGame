@@ -3,21 +3,21 @@ import Board from './Board'
 import PropTypes from 'prop-types'
 
 function Player (props) {
-	const handleShipHasSunk = () => {
+	function handleShipHasSunk () {
 		props.onPlayerHasLost(props.name)
 	}
 
-	const handleEnemyEndOfTurn = () => {
+	function handleEnemyEndOfTurn () {
 		props.onEnemyEndOfTurn(props.name)
 	}
 
-	const handleShipPlacement = () => {
+	function handleShipPlacement () {
 		props.onPlayerShipPlacement(props.name)
 	}
 
 	return (
-		<div className={`player-container ${props.customStyle}`}>
-			<h3 className='text-center'>{props.name}</h3>
+		<div className={`split-child-container ${props.customStyle}`}>
+			<h3 className="text-center">{props.name}</h3>
 			<Board
 				showShipMarker={props.showShipOnBoard}
 				onShipHasSunk={handleShipHasSunk}

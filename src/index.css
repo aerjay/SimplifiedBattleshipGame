@@ -1,14 +1,14 @@
 :root {
-	--clr-primary-200: #00aeff;
-	--clr-primary-400: #ff2600;
-
-	--clr-neutral-100: #ffffff;
-	--clr-neutral-200: #bbbbbe;
-	--clr-neutral-300: #707070;
-	--clr-neutral-400: #ffffff33;
-
-	--ff-primary: 'Russo One', sans-serif;
-	--ff-accent: 'Press Start 2P', cursive;
+	--clr-ship: #00aeff;
+	--clr-hit: #ff2600;
+	--clr-game-over: #77dd77;
+	--clr-invalid-click: #ff8800;
+	--clr-white: #fafafa;
+	--clr-light-grey: #bbbbbe;
+	--clr-grey: #707070;
+	--clr-dark-grey: #ffffff33;
+	--ff-primary: "Russo One", sans-serif;
+	--ff-accent: "Press Start 2P", cursive;
 }
 
 *,
@@ -22,7 +22,7 @@ body {
 	font-weight: 400;
 	font-size: 1rem;
 	margin-bottom: 1em;
-	background-color: var(--clr-neutral-100);
+	background-color: var(--clr-white);
 }
 
 body,
@@ -62,10 +62,21 @@ section {
 	flex-basis: 100%;
 }
 
+.split-child-container {
+	position: relative;
+	margin: 0;
+}
+
+.split-child-container > h3 {
+	left: 32px;
+	position: inherit;
+	bottom: 1em;
+}
+
 button {
-	background: var(--clr-neutral-200);
-	box-shadow: inset 0 0 0 99999px var(--clr-neutral-400);
-	border: 1px solid var(--clr-neutral-300);
+	background: var(--clr-light-grey);
+	box-shadow: inset 0 0 0 99999px var(--clr-dark-grey);
+	border: 1px solid var(--clr-grey);
 	height: 34px;
 	margin-right: -1px;
 	margin-top: -1px;
@@ -74,36 +85,60 @@ button {
 
 button:active {
 	outline: none;
-	border: 1px solid var(--clr-neutral-300);
+	border: 1px solid var(--clr-grey);
 }
 
 button:visited {
 	outline: none;
-	border: 1px solid var(--clr-neutral-300);
+	border: 1px solid var(--clr-grey);
 }
 
 button:focus {
 	outline-offset: 0;
 	outline: none;
-	border: 1px solid var(--clr-neutral-300);
+	border: 1px solid var(--clr-grey);
 }
 
 button:focus.hit {
-	outline-offset: 0;
-	outline-color: var(--clr-primary-200);
-	outline-style: auto;
-	border: 1px solid var(--clr-neutral-300);
+	outline: none;
+	border: 3px solid var(--clr-ship);
 }
 
 button:focus.miss {
-	outline-offset: 0;
-	outline-color: var(--clr-primary-400);
-	outline-style: auto;
-	border: 1px solid var(--clr-neutral-300);
+	outline: none;
+	border: 3px solid var(--clr-hit);
 }
 
 button:hover {
 	box-shadow: none;
+}
+
+.hit {
+	background-color: var(--clr-hit);
+	outline: none;
+	border: 3px solid var(--clr-ship);
+}
+
+.miss {
+	outline: none;
+	border: 3px solid var(--clr-hit);
+}
+
+.ship {
+	background-color: var(--clr-ship);
+}
+
+.reset-button {
+	margin: 0 auto;
+	display: block;
+	width: fit-content;
+	background-color: var(--clr-game-over);
+}
+
+.grid-row {
+	clear: both;
+	content: "";
+	display: flex;
 }
 
 .grid {
@@ -112,15 +147,8 @@ button:hover {
 	display: table;
 }
 
-.player-container {
-	position: relative;
-	margin: 0;
-}
-
-.player-container > h3 {
-	left: 32px;
-	position: inherit;
-	bottom: 1em;
+.invalid-click {
+	border: 5px solid var(--clr-invalid-click);
 }
 
 .column-label {
@@ -150,117 +178,10 @@ button:hover {
 	position: relative;
 }
 
-.hit {
-	outline-color: var(--clr-primary-200);
-	outline-style: auto;
-	background-color: var(--clr-primary-400);
-}
-
-.miss {
-	outline-color: var(--clr-primary-400);
-	outline-style: auto;
-}
-
-.ship {
-	background-color: var(--clr-primary-200);
-}
-
 .hide-board {
 	visibility: hidden;
 }
 
 .unclickable-board {
 	pointer-events: none;
-}
-
-.grid-row {
-	clear: both;
-	content: '';
-	display: flex;
-}
-
-.square {
-	background: #fff;
-	border: 1px solid #999;
-	position: relative;
-	font-size: 12px;
-	font-weight: bold;
-	line-height: 34px;
-	height: 34px;
-	margin-right: -1px;
-	margin-top: -1px;
-	padding: 0;
-	text-align: center;
-	width: 34px;
-}
-
-.grid {
-	left: 15px;
-	position: relative;
-	display: block;
-}
-
-.player-container {
-	position: relative;
-	display: flex;
-	flex-wrap: wrap;
-}
-
-.column-label {
-	left: 15px;
-	position: relative;
-	display: flex;
-	width: 340px;
-	justify-content: space-around;
-}
-
-.row-label {
-	top: 20px;
-	position: absolute;
-	display: flex;
-	justify-content: space-around;
-	height: 320px;
-	flex-direction: column;
-	align-self: flex-start;
-}
-
-.board {
-	flex: 1;
-	display: flex;
-	flex-flow: column wrap;
-	align-items: center;
-	position: relative;
-}
-
-.game {
-	display: flex;
-}
-
-.hit {
-	outline-color: blue;
-	outline-style: auto;
-	background-color: red;
-}
-
-.miss{
-	outline-color: red;
-	outline-style: auto;
-}
-
-.ship {
-	background-color: blue;
-}
-
-.hide-board {
-	visibility: hidden;
-}
-
-.unclickable-board{
-	pointer-events: none
-}
-
-.grid-row::after{
-	clear: both;
-  content: "";
-  display: table;
 }
