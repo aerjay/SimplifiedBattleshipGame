@@ -1,175 +1,181 @@
-import React, { useState } from 'react'
-import Square from './Square'
-import PropTypes from 'prop-types'
+import React, { useState } from "react";
+import Square from "./Square";
+import PropTypes from "prop-types";
 
-const BOARD_SIZE = 10
-const BOARD_A_CHAR_CODE = 'A'.charCodeAt()
-const SHIP_SIZE = 3
-const MARKER_TYPE_EMPTY = 'none'
-const MARKER_TYPE_SHIP = 'ship'
-const MARKER_TYPE_HIT = 'hit'
-const MARKER_TYPE_MISS = 'miss'
-const ROW_RANGE = Array.from(Array(BOARD_SIZE + 1).keys()).splice(1)
-const COLUMN_RANGE = Array.from(Array(BOARD_SIZE).keys())
-	.map(elem => String.fromCharCode(elem + BOARD_A_CHAR_CODE))
+const BOARD_SIZE = 10;
+const BOARD_A_CHAR_CODE = "A".charCodeAt();
+const SHIP_SIZE = 3;
+const MARKER_TYPE_EMPTY = "none";
+const MARKER_TYPE_SHIP = "ship";
+const MARKER_TYPE_HIT = "hit";
+const MARKER_TYPE_MISS = "miss";
+const ROW_RANGE = Array.from(Array(BOARD_SIZE + 1).keys()).splice(1);
+const COLUMN_RANGE = Array.from(Array(BOARD_SIZE).keys()).map((elem) =>
+  String.fromCharCode(elem + BOARD_A_CHAR_CODE)
+);
 
-function Board (props) {
-	const [grid, setGrid] = useState(initGrid())
-	const [clickedAdjSquares, setClickedAdjSquares] = useState([])
-	const [hasShipPlaced, setHasShipPlaced] = useState(false)
-	const [hasShipSunk, setHasShipSunk] = useState(false)
-	const [invalidClick, setInvalidClick] = useState(false)
+function Board({ onEndOfTurn, onShipHasSunk, onPlaceShip, showShipMarker }) {
+  const [grid, setGrid] = useState(initGrid());
+  const [shipLocation, setShipLocation] = useState([]);
+  const [hasShipPlaced, setHasShipPlaced] = useState(false);
+  const [invalidClick, setInvalidClick] = useState(false);
 
-	function initGrid () {
-		const grid = new Map()
+  function formatGridSquareName(col, row) {
+    return `${col}${row}`;
+  }
 
-		ROW_RANGE.forEach(row => {
-			COLUMN_RANGE.forEach(col => {
-				grid.set(col + row, MARKER_TYPE_EMPTY)
-			})
-		})
+  function setGridSquare(g, col, row, value) {
+    g.set(formatGridSquareName(col, row), value);
+  }
 
-		return grid
-	}
+  function getGridSquare(g, col, row) {
+    return g.get(formatGridSquareName(col, row));
+  }
 
-	function handleClick (x, y) {
-		const clickedAdjSqrsCp = clickedAdjSquares.slice()
-		const gridCp = new Map(grid)
-		let hasShipJustSunk = hasShipSunk
-		let hasEnemyAttackEnded = false
+  function initGrid() {
+    const grid = new Map();
 
-		if (hasShipSunk) return
+    ROW_RANGE.forEach((row) =>
+      COLUMN_RANGE.forEach((col) =>
+        setGridSquare(grid, col, row, MARKER_TYPE_EMPTY)
+      )
+    );
 
-		if (!hasShipPlaced) {
-			placeShipOnBoard(clickedAdjSqrsCp, x, y, gridCp)
-		} else {
-			if (gridCp.get(x + y) === MARKER_TYPE_SHIP) {
-				gridCp.set(x + y, MARKER_TYPE_HIT)
-				hasShipJustSunk = clickedAdjSqrsCp.every(val => gridCp.get(val.x + val.y) === MARKER_TYPE_HIT)
-				hasEnemyAttackEnded = true
-				setInvalidClick(false)
-			} else if (gridCp.get(x + y) === MARKER_TYPE_EMPTY) {
-				gridCp.set(x + y, MARKER_TYPE_MISS)
-				hasEnemyAttackEnded = true
-				setInvalidClick(false)
-			} else {
-				setInvalidClick(true)
-			}
-		}
+    return grid;
+  }
 
-		if (!hasShipPlaced && clickedAdjSqrsCp.length === SHIP_SIZE) {
-			setHasShipPlaced(true)
-			props.onShipPlacement()
-		}
+  function placeShipSquareOnBoard(placedShipSquares, row, col, grid) {
+    if (placedShipSquares.length === 0) {
+      placedShipSquares.push({ row, col });
+      setGridSquare(grid, col, row, MARKER_TYPE_SHIP);
+      setInvalidClick(false);
+      return;
+    }
 
-		if (hasShipJustSunk) {
-			setHasShipSunk(hasShipJustSunk)
-			props.onShipHasSunk()
-		}
+    const canPlace =
+      placedShipSquares.length < SHIP_SIZE &&
+      !placedShipSquares.some((val) => val.row === row && val.col === col);
 
-		if (hasEnemyAttackEnded) props.onEnemyEndOfTurn()
+    const isPlacedVertically =
+      placedShipSquares.every((val) => val.col === col) &&
+      placedShipSquares.some(
+        (val) =>
+          val.row.charCodeAt() - row.charCodeAt() === 1 ||
+          val.row.charCodeAt() - row.charCodeAt() === -1
+      );
 
-		setGrid(gridCp)
-		setClickedAdjSquares(clickedAdjSqrsCp)
-	}
+    const isPlacedHorizontally =
+      placedShipSquares.every((val) => val.row === row) &&
+      placedShipSquares.some(
+        (val) => val.col - col === 1 || val.col - col === -1
+      );
 
-	function placeShipOnBoard (clickedSqrs, x, y, grid) {
-		if (clickedSqrs.length === 0) {
-			clickedSqrs.push({ x, y })
-			grid.set(x + y, MARKER_TYPE_SHIP)
-			setInvalidClick(false)
-			return
-		}
+    if (canPlace && (isPlacedVertically || isPlacedHorizontally)) {
+      placedShipSquares.push({ row, col });
+      setGridSquare(grid, col, row, MARKER_TYPE_SHIP);
+      setInvalidClick(false);
+    } else {
+      setInvalidClick(true);
+    }
+  }
 
-		if (clickedSqrs.length < SHIP_SIZE && !clickedSqrs.some(val => val.x === x && val.y === y)) {
-			if (clickedSqrs.every(val => val.y === y) &&
-			clickedSqrs.some(val => val.x.charCodeAt() - x.charCodeAt() === 1 ||
-			val.x.charCodeAt() - x.charCodeAt() === -1)) {
-				clickedSqrs.push({ x: x, y: y })
-				grid.set(x + y, MARKER_TYPE_SHIP)
-				setInvalidClick(false)
-			} else if (clickedSqrs.every(val => val.x === x) &&
-				clickedSqrs.some(val => val.y - y === 1 || val.y - y === -1)) {
-				clickedSqrs.push({ x: x, y: y })
-				grid.set(x + y, MARKER_TYPE_SHIP)
-				setInvalidClick(false)
-			} else {
-				setInvalidClick(true)
-			}
-		} else {
-			setInvalidClick(true)
-		}
-	}
+  function handleClick(row, col) {
+    const shipLocationCopy = shipLocation.slice();
+    const gridCopy = new Map(grid);
+    let hasShipJustSunk = false;
+    let hasEnemyAttackEnded = false;
 
-	function renderSquare (x, y) {
-		const marker = grid.get(x + y)
+    if (!hasShipPlaced) {
+      placeShipSquareOnBoard(shipLocationCopy, row, col, gridCopy);
+    } else {
+      if (getGridSquare(gridCopy, col, row) === MARKER_TYPE_SHIP) {
+        setGridSquare(gridCopy, col, row, MARKER_TYPE_HIT);
+        hasShipJustSunk = shipLocationCopy.every(
+          (val) => getGridSquare(gridCopy, val.y, val.x) === MARKER_TYPE_HIT
+        );
+        hasEnemyAttackEnded = true;
+        setInvalidClick(false);
+      } else if (getGridSquare(gridCopy, col, row) === MARKER_TYPE_EMPTY) {
+        setGridSquare(gridCopy, col, row, MARKER_TYPE_MISS);
+        hasEnemyAttackEnded = true;
+        setInvalidClick(false);
+      } else {
+        setInvalidClick(true);
+      }
+    }
 
-		if (!props.showShipMarker && marker === MARKER_TYPE_SHIP) {
-			return (
-				<Square
-					key={x + y}
-					testId={x + y}
-					customStyle={''}
-					onClick={() => handleClick(x, y)}
-				/>
-			)
-		}
+    if (!hasShipPlaced && shipLocationCopy.length === SHIP_SIZE) {
+      setHasShipPlaced(true);
+      onPlaceShip();
+    }
 
-		return (
-			<Square
-				key={x + y}
-				testId={x + y}
-				customStyle={marker}
-				onClick={() => handleClick(x, y)}
-			/>
-		)
-	}
+    if (hasShipJustSunk) {
+      onShipHasSunk();
+    }
 
-	function renderGrid () {
-		const grid = []
-		let aRow = []
+    if (hasEnemyAttackEnded) onEndOfTurn();
 
-		ROW_RANGE.forEach((row, rowIndex) => {
-			aRow = []
-			COLUMN_RANGE.forEach(col => {
-				aRow.push(renderSquare(col, row))
-			})
-			grid.push(
-				<div key={rowIndex} className="grid-row">
-					{aRow}
-				</div>
-			)
-		})
+    setGrid(gridCopy);
+    setShipLocation(shipLocationCopy);
+  }
 
-		return grid
-	}
+  function renderSquare(row, col) {
+    const marker = getGridSquare(grid, col, row);
+    return (
+      <Square
+        key={formatGridSquareName(col, row)}
+        testId={formatGridSquareName(col, row)}
+        className={!showShipMarker && marker === MARKER_TYPE_SHIP ? "" : marker}
+        onClick={() => handleClick(row, col)}
+      />
+    );
+  }
 
-	return (
-		<div className="board">
-			<div className="column-label">
-				{COLUMN_RANGE.map(elem => (
-					<div key={elem}>{elem}</div>
-				))}
-			</div>
-			<div>
-				<div className={invalidClick ? 'grid invalid-click' : 'grid'}>
-					{renderGrid()}
-				</div>
-				<div className="row-label">
-					{ROW_RANGE.map(elem => (
-						<div key={elem}>{elem}</div>
-					))}
-				</div>
-			</div>
-		</div>
-	)
+  function renderGrid() {
+    const grid = [];
+    let aRow = [];
+
+    ROW_RANGE.forEach((row, rowIndex) => {
+      aRow = [];
+      COLUMN_RANGE.forEach((col) => {
+        aRow.push(renderSquare(col, row));
+      });
+      grid.push(
+        <div key={rowIndex} className="grid-row">
+          {aRow}
+        </div>
+      );
+    });
+
+    return grid;
+  }
+
+  return (
+    <div className="board">
+      <div className="column-label">
+        {COLUMN_RANGE.map((elem) => (
+          <div key={elem}>{elem}</div>
+        ))}
+      </div>
+      <div>
+        <div className={`grid ${invalidClick ? "invalid-click" : ""}`}>
+          {renderGrid()}
+        </div>
+        <div className="row-label">
+          {ROW_RANGE.map((elem) => (
+            <div key={elem}>{elem}</div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 Board.propTypes = {
-	showShipMarker: PropTypes.bool.isRequired,
-	onShipHasSunk: PropTypes.func.isRequired,
-	onEnemyEndOfTurn: PropTypes.func.isRequired,
-	onShipPlacement: PropTypes.func.isRequired
-}
+  showShipMarker: PropTypes.bool.isRequired,
+  onShipHasSunk: PropTypes.func.isRequired,
+  onEnemyEndOfTurn: PropTypes.func.isRequired,
+  onPlaceShip: PropTypes.func.isRequired,
+};
 
-export default Board
+export default Board;
