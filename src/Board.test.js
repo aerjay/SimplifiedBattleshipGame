@@ -13,10 +13,10 @@ const MARKER_TYPE_EMPTY = 'none'
 test('renders all the squares', async () => {
 	render(
 		<Board
-			showShipMarker={true}
+			showShip={true}
 			onShipHasSunk={() => {}}
-			onEnemyEndOfTurn={() => {}}
-			onShipPlacement={() => {}}
+			onClickSquare={() => {}}
+			onPlaceShip={() => {}}
 		/>
 	)
 
@@ -29,10 +29,10 @@ test('renders all the squares', async () => {
 test('renders column labels', () => {
 	render(
 		<Board
-			showShipMarker={true}
+			showShip={true}
 			onShipHasSunk={() => {}}
-			onEnemyEndOfTurn={() => {}}
-			onShipPlacement={() => {}}
+			onClickSquare={() => {}}
+			onPlaceShip={() => {}}
 		/>
 	)
 
@@ -44,10 +44,10 @@ test('renders column labels', () => {
 test('renders row labels', () => {
 	render(
 		<Board
-			showShipMarker={true}
+			showShip={true}
 			onShipHasSunk={() => {}}
-			onEnemyEndOfTurn={() => {}}
-			onShipPlacement={() => {}}
+			onClickSquare={() => {}}
+			onPlaceShip={() => {}}
 		/>
 	)
 
@@ -60,13 +60,13 @@ test('renders row labels', () => {
 	}
 })
 
-test('does not change square\'s marker type to ship on click when showShipMarker is disabled', () => {
+test('does not change square\'s marker type to ship on click when showShip is disabled', () => {
 	render(
 		<Board
-			showShipMarker={false}
+			showShip={false}
 			onShipHasSunk={() => {}}
-			onEnemyEndOfTurn={() => {}}
-			onShipPlacement={() => {}}
+			onClickSquare={() => {}}
+			onPlaceShip={() => {}}
 		/>
 	)
 	const a1 = screen.getByTestId('A1')
@@ -76,13 +76,13 @@ test('does not change square\'s marker type to ship on click when showShipMarker
 	expect(a1).not.toHaveClass(MARKER_TYPE_SHIP)
 })
 
-test('changes square\'s marker type to ship on click when showShipMarker is enabled', () => {
+test('changes square\'s marker type to ship on click when showShip is enabled', () => {
 	render(
 		<Board
-			showShipMarker={true}
+			showShip={true}
 			onShipHasSunk={() => {}}
-			onEnemyEndOfTurn={() => {}}
-			onShipPlacement={() => {}}
+			onClickSquare={() => {}}
+			onPlaceShip={() => {}}
 		/>
 	)
 	const a1 = screen.getByTestId('A1')
@@ -95,10 +95,10 @@ test('changes square\'s marker type to ship on click when showShipMarker is enab
 test('changes square\'s marker type to ship on double click', () => {
 	render(
 		<Board
-			showShipMarker={true}
+			showShip={true}
 			onShipHasSunk={() => {}}
-			onEnemyEndOfTurn={() => {}}
-			onShipPlacement={() => {}}
+			onClickSquare={() => {}}
+			onPlaceShip={() => {}}
 		/>
 	)
 	const a1 = screen.getByTestId('A1')
@@ -111,10 +111,10 @@ test('changes square\'s marker type to ship on double click', () => {
 test('changes the marker type of the first selected square to ship when clicking non-neighbouring squares', () => {
 	render(
 		<Board
-			showShipMarker={true}
+			showShip={true}
 			onShipHasSunk={() => {}}
-			onEnemyEndOfTurn={() => {}}
-			onShipPlacement={() => {}}
+			onClickSquare={() => {}}
+			onPlaceShip={() => {}}
 		/>
 	)
 	const i3 = screen.getByTestId('I3')
@@ -136,10 +136,10 @@ test('changes the marker type of the first selected square to ship when clicking
 test('changes the marker type of the first three distinct horizontal neighbouring squares to ship', () => {
 	render(
 		<Board
-			showShipMarker={true}
+			showShip={true}
 			onShipHasSunk={() => {}}
-			onEnemyEndOfTurn={() => {}}
-			onShipPlacement={() => {}}
+			onClickSquare={() => {}}
+			onPlaceShip={() => {}}
 		/>
 	)
 	const f9 = screen.getByTestId('F9')
@@ -161,10 +161,10 @@ test('changes the marker type of the first three distinct horizontal neighbourin
 test('changes the marker type of the first three distinct vertical neighbouring squares to ship', () => {
 	render(
 		<Board
-			showShipMarker={true}
+			showShip={true}
 			onShipHasSunk={() => {}}
-			onEnemyEndOfTurn={() => {}}
-			onShipPlacement={() => {}}
+			onClickSquare={() => {}}
+			onPlaceShip={() => {}}
 		/>
 	)
 	const b8 = screen.getByTestId('B8')
@@ -186,10 +186,10 @@ test('changes the marker type of the first three distinct vertical neighbouring 
 test('changes the marker type of the first three distinct horizontal neighbouring squares to ship and the rest to miss when clicking more than three squares', () => {
 	render(
 		<Board
-			showShipMarker={true}
+			showShip={true}
 			onShipHasSunk={() => {}}
-			onEnemyEndOfTurn={() => {}}
-			onShipPlacement={() => {}}
+			onClickSquare={() => {}}
+			onPlaceShip={() => {}}
 		/>
 	)
 	const c1 = screen.getByTestId('C1')
@@ -211,10 +211,10 @@ test('changes the marker type of the first three distinct horizontal neighbourin
 test('changes the marker type of the first three distinct vertical neighbouring squares to ship when clicking more than three squares', () => {
 	render(
 		<Board
-			showShipMarker={true}
+			showShip={true}
 			onShipHasSunk={() => {}}
-			onEnemyEndOfTurn={() => {}}
-			onShipPlacement={() => {}}
+			onClickSquare={() => {}}
+			onPlaceShip={() => {}}
 		/>
 	)
 	const f8 = screen.getByTestId('F8')
@@ -236,10 +236,10 @@ test('changes the marker type of the first three distinct vertical neighbouring 
 test('only changes the marker type of squares that has ship to hit by re-clicking them and the rest as miss', () => {
 	render(
 		<Board
-			showShipMarker={true}
+			showShip={true}
 			onShipHasSunk={() => {}}
-			onEnemyEndOfTurn={() => {}}
-			onShipPlacement={() => {}}
+			onClickSquare={() => {}}
+			onPlaceShip={() => {}}
 		/>
 	)
 	const c1 = screen.getByTestId('C1')
@@ -267,13 +267,13 @@ test('only changes the marker type of squares that has ship to hit by re-clickin
 	expect(f9).toHaveClass(MARKER_TYPE_MISS)
 })
 
-test("not allowed to click any squares after setting three squares' marker type to hit", () => {
+test("allowed to click any squares after setting three squares' marker type to hit", () => {
 	render(
 		<Board
-			showShipMarker={true}
+			showShip={true}
 			onShipHasSunk={() => {}}
-			onEnemyEndOfTurn={() => {}}
-			onShipPlacement={() => {}}
+			onClickSquare={() => {}}
+			onPlaceShip={() => {}}
 		/>
 	)
 	const f8 = screen.getByTestId('F8')
@@ -296,19 +296,19 @@ test("not allowed to click any squares after setting three squares' marker type 
 	expect(f8).toHaveClass(MARKER_TYPE_HIT)
 	expect(f9).toHaveClass(MARKER_TYPE_HIT)
 	expect(f10).toHaveClass(MARKER_TYPE_HIT)
-	expect(a1).toHaveClass(MARKER_TYPE_EMPTY)
-	expect(f1).toHaveClass(MARKER_TYPE_EMPTY)
-	expect(a10).toHaveClass(MARKER_TYPE_EMPTY)
+	expect(a1).toHaveClass(MARKER_TYPE_MISS)
+	expect(f1).toHaveClass(MARKER_TYPE_MISS)
+	expect(a10).toHaveClass(MARKER_TYPE_MISS)
 })
 
-test("calls onShipPlacement handler once after setting three neighbouring squares' marker type to ship", () => {
+test("calls onPlaceShip handler once after setting three neighbouring squares' marker type to ship", () => {
 	const handleShipPlacement = jest.fn()
 	render(
 		<Board
-			showShipMarker={true}
+			showShip={true}
 			onShipHasSunk={() => {}}
-			onEnemyEndOfTurn={() => {}}
-			onShipPlacement={handleShipPlacement}
+			onClickSquare={() => {}}
+			onPlaceShip={handleShipPlacement}
 		/>
 	)
 	const f8 = screen.getByTestId('F8')
@@ -329,10 +329,10 @@ test("calls onShipHasSunk handler once after setting three squares' marker type 
 	const handleShipHasSunk = jest.fn()
 	render(
 		<Board
-			showShipMarker={true}
+			showShip={true}
 			onShipHasSunk={handleShipHasSunk}
-			onEnemyEndOfTurn={() => {}}
-			onShipPlacement={() => {}}
+			onClickSquare={() => {}}
+			onPlaceShip={() => {}}
 		/>
 	)
 	const f8 = screen.getByTestId('F8')
@@ -352,14 +352,14 @@ test("calls onShipHasSunk handler once after setting three squares' marker type 
 	expect(handleShipHasSunk).toHaveBeenCalledTimes(1)
 })
 
-test('calls onEnemyEndOfTurn handler once after setting a square\'s marker type to hit', () => {
+test('calls onClickSquare handler once after setting a square\'s marker type to hit', () => {
 	const handleEnemyEndOfTurn = jest.fn()
 	render(
 		<Board
-			showShipMarker={true}
+			showShip={true}
 			onShipHasSunk={() => {}}
-			onEnemyEndOfTurn={handleEnemyEndOfTurn}
-			onShipPlacement={() => {}}
+			onClickSquare={handleEnemyEndOfTurn}
+			onPlaceShip={() => {}}
 		/>
 	)
 	const f8 = screen.getByTestId('F8')
@@ -377,14 +377,14 @@ test('calls onEnemyEndOfTurn handler once after setting a square\'s marker type 
 	expect(handleEnemyEndOfTurn).toHaveBeenCalledTimes(1)
 })
 
-test('calls onEnemyEndOfTurn handler once after setting a square\'s marker type to miss', () => {
+test('calls onClickSquare handler once after setting a square\'s marker type to miss', () => {
 	const handleEnemyEndOfTurn = jest.fn()
 	render(
 		<Board
-			showShipMarker={true}
+			showShip={true}
 			onShipHasSunk={() => {}}
-			onEnemyEndOfTurn={handleEnemyEndOfTurn}
-			onShipPlacement={() => {}}
+			onClickSquare={handleEnemyEndOfTurn}
+			onPlaceShip={() => {}}
 		/>
 	)
 	const f8 = screen.getByTestId('F8')

@@ -2,7 +2,6 @@
   --clr-ship: #00aeff;
   --clr-hit: #ff2600;
   --clr-game-over: #77dd77;
-  --clr-invalid-click: #ff8800;
   --clr-white: #fafafa;
   --clr-light-grey: #bbbbbe;
   --clr-grey: #707070;
@@ -145,10 +144,6 @@ button:hover {
   left: 20px;
   position: relative;
   display: table;
-}
-
-.invalid-click {
-  border: 5px solid var(--clr-invalid-click);
 }
 
 .column-label {
