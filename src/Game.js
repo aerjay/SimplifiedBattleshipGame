@@ -76,9 +76,9 @@ function Game() {
         <h3 className="text-center">{currentPlayer}</h3>
         <Board
           currentPlayer={currentPlayer}
-          showShipMarker={!!winner || !isBoardReady}
+          showShip={!!winner || !isBoardReady}
           onShipHasSunk={handlePlayerHasLost}
-          onEndOfTurn={handleEndOfTurn}
+          onClickSquare={handleEndOfTurn}
           onPlaceShip={handlePlacePlayerShip}
         />
       </div>

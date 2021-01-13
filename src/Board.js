@@ -14,12 +14,7 @@ const COLUMN_RANGE = Array.from(Array(BOARD_SIZE).keys()).map((elem) =>
   String.fromCharCode(elem + BOARD_A_CHAR_CODE)
 );
 
-function Board({ onEndOfTurn, onShipHasSunk, onPlaceShip, showShipMarker }) {
-  const [grid, setGrid] = useState(initGrid());
-  const [shipLocation, setShipLocation] = useState([]);
-  const [hasShipPlaced, setHasShipPlaced] = useState(false);
-  const [invalidClick, setInvalidClick] = useState(false);
-
+function Board({ onClickSquare, onShipHasSunk, onPlaceShip, showShip }) {
   function formatGridSquareName(col, row) {
     return `${col}${row}`;
   }
@@ -43,6 +38,11 @@ function Board({ onEndOfTurn, onShipHasSunk, onPlaceShip, showShipMarker }) {
 
     return grid;
   }
+
+  const [grid, setGrid] = useState(initGrid());
+  const [shipLocation, setShipLocation] = useState([]);
+  const [isShipPlaced, setIsShipPlaced] = useState(false);
+  const [invalidClick, setInvalidClick] = useState(false);
 
   function placeShipSquareOnBoard(placedShipSquares, row, col, grid) {
     if (placedShipSquares.length === 0) {
@@ -79,44 +79,54 @@ function Board({ onEndOfTurn, onShipHasSunk, onPlaceShip, showShipMarker }) {
     }
   }
 
-  function handleClick(row, col) {
-    const shipLocationCopy = shipLocation.slice();
-    const gridCopy = new Map(grid);
-    let hasShipJustSunk = false;
-    let hasEnemyAttackEnded = false;
+  function placeShip(ship, g, row, col) {
+    placeShipSquareOnBoard(ship, row, col, g);
 
-    if (!hasShipPlaced) {
-      placeShipSquareOnBoard(shipLocationCopy, row, col, gridCopy);
-    } else {
-      if (getGridSquare(gridCopy, col, row) === MARKER_TYPE_SHIP) {
-        setGridSquare(gridCopy, col, row, MARKER_TYPE_HIT);
-        hasShipJustSunk = shipLocationCopy.every(
-          (val) => getGridSquare(gridCopy, val.y, val.x) === MARKER_TYPE_HIT
-        );
-        hasEnemyAttackEnded = true;
-        setInvalidClick(false);
-      } else if (getGridSquare(gridCopy, col, row) === MARKER_TYPE_EMPTY) {
-        setGridSquare(gridCopy, col, row, MARKER_TYPE_MISS);
-        hasEnemyAttackEnded = true;
-        setInvalidClick(false);
-      } else {
-        setInvalidClick(true);
-      }
+    if (ship.length === SHIP_SIZE) {
+      setIsShipPlaced(true);
+      onPlaceShip();
     }
 
-    if (!hasShipPlaced && shipLocationCopy.length === SHIP_SIZE) {
-      setHasShipPlaced(true);
-      onPlaceShip();
+    setShipLocation(ship);
+  }
+
+  function attackShip(ship, g, row, col) {
+    let hasShipJustSunk = false;
+    let hasAttacked = false;
+
+    if (getGridSquare(g, col, row) === MARKER_TYPE_SHIP) {
+      hasAttacked = true;
+      setGridSquare(g, col, row, MARKER_TYPE_HIT);
+      hasShipJustSunk = ship.every(
+        (val) => getGridSquare(g, val.y, val.x) === MARKER_TYPE_HIT
+      );
+    } else if (getGridSquare(g, col, row) === MARKER_TYPE_EMPTY) {
+      hasAttacked = true;
+      setGridSquare(g, col, row, MARKER_TYPE_MISS);
+    }
+
+    if (hasAttacked) {
+      onClickSquare();
+      setInvalidClick(false);
+    } else {
+      setInvalidClick(true);
     }
 
     if (hasShipJustSunk) {
       onShipHasSunk();
     }
 
-    if (hasEnemyAttackEnded) onEndOfTurn();
+    setGrid(g);
+  }
 
-    setGrid(gridCopy);
-    setShipLocation(shipLocationCopy);
+  function handleClickSquare(row, col) {
+    const shipLocationCopy = [...shipLocation];
+    const gridCopy = { ...grid };
+    if (!isShipPlaced) {
+      placeShip(shipLocationCopy, gridCopy, row, col);
+    } else {
+      attackShip(shipLocationCopy, gridCopy, row, col);
+    }
   }
 
   function renderSquare(row, col) {
@@ -125,8 +135,8 @@ function Board({ onEndOfTurn, onShipHasSunk, onPlaceShip, showShipMarker }) {
       <Square
         key={formatGridSquareName(col, row)}
         testId={formatGridSquareName(col, row)}
-        className={!showShipMarker && marker === MARKER_TYPE_SHIP ? "" : marker}
-        onClick={() => handleClick(row, col)}
+        className={!showShip && marker === MARKER_TYPE_SHIP ? "" : marker}
+        onClick={() => handleClickSquare(row, col)}
       />
     );
   }
@@ -172,9 +182,9 @@ function Board({ onEndOfTurn, onShipHasSunk, onPlaceShip, showShipMarker }) {
 }
 
 Board.propTypes = {
-  showShipMarker: PropTypes.bool.isRequired,
+  showShip: PropTypes.bool.isRequired,
   onShipHasSunk: PropTypes.func.isRequired,
-  onEnemyEndOfTurn: PropTypes.func.isRequired,
+  onClickSquare: PropTypes.func.isRequired,
   onPlaceShip: PropTypes.func.isRequired,
 };
 
