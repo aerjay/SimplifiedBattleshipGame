@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/SimplifiedBattleshipGame/static/css/main.5925e814.chunk.css",
-    "main.js": "/SimplifiedBattleshipGame/static/js/main.a36d2ebf.chunk.js",
-    "main.js.map": "/SimplifiedBattleshipGame/static/js/main.a36d2ebf.chunk.js.map",
+    "main.css": "/SimplifiedBattleshipGame/static/css/main.50c8f64e.chunk.css",
+    "main.js": "/SimplifiedBattleshipGame/static/js/main.a4677e94.chunk.js",
+    "main.js.map": "/SimplifiedBattleshipGame/static/js/main.a4677e94.chunk.js.map",
     "runtime-main.js": "/SimplifiedBattleshipGame/static/js/runtime-main.79d0b57c.js",
     "runtime-main.js.map": "/SimplifiedBattleshipGame/static/js/runtime-main.79d0b57c.js.map",
     "static/js/2.781a6b4c.chunk.js": "/SimplifiedBattleshipGame/static/js/2.781a6b4c.chunk.js",
     "static/js/2.781a6b4c.chunk.js.map": "/SimplifiedBattleshipGame/static/js/2.781a6b4c.chunk.js.map",
     "index.html": "/SimplifiedBattleshipGame/index.html",
-    "static/css/main.5925e814.chunk.css.map": "/SimplifiedBattleshipGame/static/css/main.5925e814.chunk.css.map",
+    "static/css/main.50c8f64e.chunk.css.map": "/SimplifiedBattleshipGame/static/css/main.50c8f64e.chunk.css.map",
     "static/js/2.781a6b4c.chunk.js.LICENSE.txt": "/SimplifiedBattleshipGame/static/js/2.781a6b4c.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.79d0b57c.js",
     "static/js/2.781a6b4c.chunk.js",
-    "static/css/main.5925e814.chunk.css",
-    "static/js/main.a36d2ebf.chunk.js"
+    "static/css/main.50c8f64e.chunk.css",
+    "static/js/main.a4677e94.chunk.js"
   ]
 }
