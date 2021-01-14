@@ -32,25 +32,37 @@ function Game () {
 	function handlePlacePlayerShip () {
 		const shipsOnBoardCopy = new Map(shipsOnBoard)
 		shipsOnBoardCopy.set(currentPlayer, true)
-		const isBoardReady = [...shipsOnBoardCopy.values()].every((val) => val === true)
+		const isBoardReady = [...shipsOnBoardCopy.values()].every(
+			(val) => val === true
+		)
 
-		isBoardReady ? setCurrentBoardToShow(currentPlayer) : setCurrentBoardToShow(opponent)
+		isBoardReady
+			? setCurrentBoardToShow(currentPlayer)
+			: setCurrentBoardToShow(opponent)
 		setCurrentPlayer(opponent)
 		setShipsOnBoard(shipsOnBoardCopy)
 	}
 
 	function renderGameInfo () {
+		const playerColorClassName =
+			currentPlayer === PLAYER_ONE_NAME ? 'orange' : 'purple'
 		let info = ''
 		if (winner) {
 			info = `Congratulations ${winner}!! You sunk ${opponent}'s ship.`
 		} else if (isBoardReady) {
-			info = `${currentPlayer} attack ${opponent} by clicking any square.`
+			info = `Attack ${opponent} by clicking any square.`
 		} else {
-			info = `${currentPlayer} place your ship on board by clicking 3 adjacent squares horizontally or vertically.`
+			info =
+				'Place your ship on board by clicking 3 adjacent squares horizontally or vertically.'
 		}
 
 		return (
-			<div className="split-child-container">
+			<div className="game-info">
+				{!winner && (
+					<h4
+						className={`text-center ${playerColorClassName}`}
+					>{`${currentPlayer}'s Turn`}</h4>
+				)}
 				<p className="text-center">{info}</p>
 				{winner && (
 					<button
@@ -65,14 +77,18 @@ function Game () {
 	}
 
 	function renderPlayerBoard (playerName) {
-		let boardContainerClassName = currentBoardToShow.includes(playerName) ? '' : 'hidden'
-		boardContainerClassName = winner ? `${boardContainerClassName} unclickable` : boardContainerClassName
+		let boardContainerClassName = currentBoardToShow.includes(playerName)
+			? ''
+			: 'hidden'
+		boardContainerClassName = winner
+			? `${boardContainerClassName} unclickable`
+			: boardContainerClassName
 
 		return (
-			<div className={`split-child-container ${boardContainerClassName}`}>
-				<h3 className="text-center">{playerName}</h3>
+			<div className={boardContainerClassName}>
+				<h3 className="text-center">{`${playerName}'s Board`}</h3>
 				<Board
-					showShip={!!winner || !(isBoardReady)}
+					showShip={!!winner || !isBoardReady}
 					onShipHasSunk={handlePlayerHasLost}
 					onClickSquare={handleEndOfTurn}
 					onPlaceShip={handlePlacePlayerShip}
@@ -83,9 +99,11 @@ function Game () {
 
 	return (
 		<div className="split">
-			{renderPlayerBoard(PLAYER_ONE_NAME)}
-			{renderGameInfo()}
-			{renderPlayerBoard(PLAYER_TWO_NAME)}
+			<div className="split-child-container">
+				{renderGameInfo()}
+				{renderPlayerBoard(PLAYER_ONE_NAME)}
+				{renderPlayerBoard(PLAYER_TWO_NAME)}
+			</div>
 		</div>
 	)
 }

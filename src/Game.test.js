@@ -12,8 +12,8 @@ const MARKER_TYPE_MISS = 'miss'
 test('renders the game with two players with default styles', () => {
 	render(<Game />)
 
-	const playerOne = screen.getByText(PLAYER_ONE_NAME).closest('div')
-	const playerTwo = screen.getByText(PLAYER_TWO_NAME).closest('div')
+	const playerOne = screen.getByText(`${PLAYER_ONE_NAME}'s Board`).closest('div')
+	const playerTwo = screen.getByText(`${PLAYER_TWO_NAME}'s Board`).closest('div')
 
 	expect(playerOne).toBeInTheDocument()
 	expect(playerTwo).toBeInTheDocument()
@@ -23,9 +23,9 @@ test('renders the game with two players with default styles', () => {
 
 test('player one wins', () => {
 	render(<Game />)
-	const playerOne = screen.getByText(PLAYER_ONE_NAME).closest('div')
-	const playerTwo = screen.getByText(PLAYER_TWO_NAME).closest('div')
-	const winnerAnnouncement = `Congratulations ${PLAYER_ONE_NAME}`
+	const playerOne = screen.getByText(`${PLAYER_ONE_NAME}'s Board`).closest('div')
+	const playerTwo = screen.getByText(`${PLAYER_TWO_NAME}'s Board`).closest('div')
+	const winnerAnnouncement = `Congratulations ${PLAYER_ONE_NAME}!!`
 	const boardOneA1 = getByTestId(playerOne, 'A1')
 	const boardOneA2 = getByTestId(playerOne, 'A2')
 	const boardOneA3 = getByTestId(playerOne, 'A3')
@@ -62,8 +62,8 @@ test('player one wins', () => {
 
 test('player two wins', () => {
 	render(<Game />)
-	const playerOne = screen.getByText(PLAYER_ONE_NAME).closest('div')
-	const playerTwo = screen.getByText(PLAYER_TWO_NAME).closest('div')
+	const playerOne = screen.getByText(`${PLAYER_ONE_NAME}'s Board`).closest('div')
+	const playerTwo = screen.getByText(`${PLAYER_TWO_NAME}'s Board`).closest('div')
 	const winnerAnnouncement = `Congratulations ${PLAYER_TWO_NAME}`
 	const boardOneH1 = getByTestId(playerOne, 'H1')
 	const boardOneI1 = getByTestId(playerOne, 'I1')
