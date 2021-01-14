@@ -1,10 +1,11 @@
 :root {
-	--clr-ship: #00aeff;
-	--clr-hit: #ff2600;
-	--clr-game-over: #77dd77;
-	--clr-invalid-click: #ff8800;
+	--clr-blue: #00aeff;
+	--clr-purple: #9164e6;
+	--clr-red: #ff2600;
+	--clr-orange: #ff8800;
+	--clr-green: #77dd77;
 	--clr-white: #fafafa;
-	--clr-light-grey: #bbbbbe;
+	--clr-light-grey: #cfcfcf;
 	--clr-grey: #707070;
 	--clr-dark-grey: #ffffff33;
 	--ff-primary: "Russo One", sans-serif;
@@ -47,6 +48,12 @@ h3 {
 header,
 section {
 	padding: 3rem 0;
+}
+
+header,
+h4 {
+	padding-bottom: 0;
+	margin-bottom: 0;
 }
 
 .container {
@@ -101,12 +108,12 @@ button:focus {
 
 button:focus.hit {
 	outline: none;
-	border: 3px solid var(--clr-ship);
+	border: 3px solid var(--clr-blue);
 }
 
 button:focus.miss {
 	outline: none;
-	border: 3px solid var(--clr-hit);
+	border: 3px solid var(--clr-red);
 }
 
 button:hover {
@@ -114,25 +121,34 @@ button:hover {
 }
 
 .hit {
-	background-color: var(--clr-hit);
+	background-color: var(--clr-red);
 	outline: none;
-	border: 3px solid var(--clr-ship);
+	border: 3px solid var(--clr-blue);
 }
 
 .miss {
 	outline: none;
-	border: 3px solid var(--clr-hit);
+	border: 3px solid var(--clr-red);
 }
 
 .ship {
-	background-color: var(--clr-ship);
+	background-color: var(--clr-blue);
+}
+
+.game-info {
+	margin: 0 auto;
+	display: block;
+	width: 340px;
+	border: 1px solid black;
+	margin-bottom: 2em;
 }
 
 .reset-button {
 	margin: 0 auto;
 	display: block;
 	width: fit-content;
-	background-color: var(--clr-game-over);
+	background-color: var(--clr-green);
+	margin-bottom: 16px;
 }
 
 .grid-row {
@@ -142,13 +158,8 @@ button:hover {
 }
 
 .grid {
-	left: 20px;
 	position: relative;
 	display: table;
-}
-
-.invalid-click {
-	border: 5px solid var(--clr-invalid-click);
 }
 
 .column-label {
@@ -156,7 +167,6 @@ button:hover {
 	display: flex;
 	width: 304px;
 	justify-content: space-between;
-	left: 18px;
 }
 
 .row-label {
@@ -168,6 +178,8 @@ button:hover {
 	flex-direction: column;
 	align-self: flex-start;
 	text-align: right;
+	left: auto;
+	margin-left: -20px;
 }
 
 .board {
@@ -176,12 +188,21 @@ button:hover {
 	flex-flow: column wrap;
 	align-items: center;
 	position: relative;
+	padding-bottom: 2rem;
 }
 
-.hide-board {
-	visibility: hidden;
+.hidden {
+	display: none;
 }
 
-.unclickable-board {
+.unclickable {
 	pointer-events: none;
+}
+
+.orange {
+	color: var(--clr-orange);
+}
+
+.purple {
+	color: var(--clr-purple);
 }

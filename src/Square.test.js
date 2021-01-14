@@ -5,12 +5,12 @@ import { render, screen } from '@testing-library/react'
 
 test('renders a square with passed properties', () => {
 	const testId = '0'
-	const customStyle = 'value'
-	render(<Square testId={testId} customStyle={customStyle} onClick={() => {}}/>)
+	const className = 'value'
+	render(<Square testId={testId} className={className} onClick={() => {}}/>)
 
 	const square = screen.getByTestId(testId)
 
-	expect(square).toHaveClass(customStyle)
+	expect(square).toHaveClass(className)
 })
 
 test('renders a square with default customStyle', () => {

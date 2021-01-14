@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 function Square (props) {
 	return (
 		<button
-			className={props.customStyle}
+			className={props.className}
 			data-testid={props.testId}
 			onClick={props.onClick}
 		/>
@@ -13,12 +13,12 @@ function Square (props) {
 
 Square.propTypes = {
 	onClick: PropTypes.func.isRequired,
-	customStyle: PropTypes.string,
+	className: PropTypes.string,
 	testId: PropTypes.string.isRequired
 }
 
 Square.defaultProps = {
-	customStyle: ''
+	className: ''
 }
 
 export default Square
