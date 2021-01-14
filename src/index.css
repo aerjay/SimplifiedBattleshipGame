@@ -1,6 +1,6 @@
 :root {
 	--clr-blue: #00aeff;
-	--clr-purple: #b19cd9;
+	--clr-purple: #9164e6;
 	--clr-red: #ff2600;
 	--clr-orange: #ff8800;
   --clr-green: #77dd77;
@@ -50,8 +50,9 @@ section {
   padding: 3rem 0;
 }
 
-header {
+header, h4 {
 	padding-bottom: 0;
+	margin-bottom: 0;
 }
 
 .container {
