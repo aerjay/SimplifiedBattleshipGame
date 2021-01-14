@@ -88,6 +88,7 @@ button {
 	margin-right: -1px;
 	margin-top: -1px;
 	width: 34px;
+	cursor: pointer;
 }
 
 button:active {
@@ -124,15 +125,18 @@ button:hover {
 	background-color: var(--clr-red);
 	outline: none;
 	border: 3px solid var(--clr-blue);
+	cursor: not-allowed;
 }
 
 .miss {
 	outline: none;
 	border: 3px solid var(--clr-red);
+	cursor: not-allowed;
 }
 
 .ship {
 	background-color: var(--clr-blue);
+	cursor: not-allowed;
 }
 
 .game-info {

@@ -124,12 +124,8 @@ function Board ({ onClickSquare, onShipHasSunk, onPlaceShip, showShip }) {
 
 	function renderSquare (col, row) {
 		const marker = getGridSquare(grid, col, row)
-		let squareClassName =
+		const squareClassName =
 			!showShip && marker === MARKER_TYPE_SHIP ? '' : marker
-		squareClassName =
-			marker === MARKER_TYPE_HIT || marker === MARKER_TYPE_MISS
-				? `${squareClassName} unclickable`
-				: squareClassName
 
 		return (
 			<Square
