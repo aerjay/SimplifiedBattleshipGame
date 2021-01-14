@@ -5,7 +5,7 @@ A simplified implementation of the classic battle ship game. This game was boots
 To play, visit http://aerjay.github.io/SimplifiedBattleshipGame using Firefox or Chrome.
 
 <p align="center">
-	<img src="https://i.postimg.cc/xd2bpCRL/sample-Gameplay.gif" alt="Sample gameplay">
+	<img src="https://i.postimg.cc/qB52vrmt/sample-Gameplay.gif" alt="Sample gameplay">
 </p>
 
 ## Prerequisites
