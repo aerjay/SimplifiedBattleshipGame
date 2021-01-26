@@ -1,6 +1,6 @@
 # Battleship
 
-A simplified implementation of the classic battle ship game. This game was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simplified implementation of the classic battleship game. This game was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 To play, visit http://aerjay.github.io/SimplifiedBattleshipGame using Firefox or Chrome.
 
